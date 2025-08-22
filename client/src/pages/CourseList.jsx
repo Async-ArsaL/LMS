@@ -55,6 +55,60 @@ const courses = [
     language: "English",
     price: "Paid",
   },
+  {
+    id: 1,
+    title: "Web Development",
+    category: "Development",
+    description: "Build modern web apps with React, HTML, CSS, JS.",
+    thumbnail: "https://imgs.search.brave.com/ggoG5tEhpmmYzInpK2Bd1M3GitvIVCU8q7NktWonb34/rs:fit:500:0:1:0/g:ce/aHR0cHM6Ly9tZWRp/YS5pc3RvY2twaG90/by5jb20vaWQvMTQ3/ODA0NjE3Ni92ZWN0/b3IvZGV2ZWxvcGVy/LmpwZz9zPTYxMng2/MTImdz0wJms9MjAm/Yz05eVM3Ni1jTUx5/Mlo3QmZLQTZqZ09l/c19kVEFaaElJbXo0/VUwtelB5S2UwPQ",
+    language: "JavaScript",
+    price: "Paid",
+  },
+  {
+    id: 2,
+    title: "Data Science",
+    category: "Data Science",
+    description: "Analyze and visualize data using Python.",
+    thumbnail: "https://imgs.search.brave.com/ERYE0OzcJb0IS2zz9dxOHy2jFUF19yCAJyys36zfZ8c/rs:fit:500:0:1:0/g:ce/aHR0cHM6Ly93YWxs/cGFwZXJjYXZlLmNv/bS93cC93cDkxNjUz/NzQuanBn",
+    language: "Python",
+    price: "Paid",
+  },
+  {
+    id: 3,
+    title: "Machine Learning",
+    category: "AI/ML",
+    description: "Introduction to machine learning algorithms.",
+    thumbnail: "https://imgs.search.brave.com/_qP9LIL1iPB68NxZfCYF3tIzkgkDQykbJs-TNJykDDg/rs:fit:500:0:1:0/g:ce/aHR0cHM6Ly9pbWcu/ZnJlZXBpay5jb20v/cHJlbWl1bS12ZWN0/b3IvbWFjaGluZS1s/ZWFybmluZy13aGl0/ZS1iYW5uZXItc2Vy/dmVyLXNjaGVtYS1j/aXJjdWl0LWFydGlm/aWNpYWwtaW50ZWxs/aWdlbmNlLWFpLWxh/bmRpbmctcGFnZS1k/ZXNpZ24tYmlnLWRh/dGEtY3liZXItbWlu/ZC1kaWdpdGFsLWJy/YWluLWlzb21ldHJp/Yy12ZWN0b3ItaWxs/dXN0cmF0aW9uXzEw/MDI2NTgtMTM0OS5q/cGc_c2VtdD1haXNf/aHlicmlkJnc9NzQw/JnE9ODA",
+    language: "Python",
+    price: "Paid",
+  },
+  {
+    id: 4,
+    title: "Machine Marketing",
+    category: "Marketing",
+    description: "Learn marketing analytics and automation.",
+    thumbnail: "https://imgs.search.brave.com/Hy6_eZ0k3307aJ1H4HPPSQQx3iK11FO-CBaX8O2sM38/rs:fit:500:0:1:0/g:ce/aHR0cHM6Ly9tZWRp/YS5nZXR0eWltYWdl/cy5jb20vaWQvMTY0/OTY3OTgxOS92ZWN0/b3IvcHV6emxlcy1h/dXRvbWF0aW9uLXJv/Ym90LWFybS1tYWNo/aW5lLmpwZz9zPTYx/Mng2MTImdz0wJms9/MjAmYz13bnJvUkpF/bFBqMWMyZDFLclZZ/ZVh4dE5mbHNxR2Ja/c3Nya0YtUWtvRlRn/PQ",
+    language: "English",
+    price: "Paid",
+  },
+  {
+    id: 5,
+    title: "Digital Marketing",
+    category: "Marketing",
+    description: "SEO, Ads, and Social Media strategies.",
+    thumbnail: "https://imgs.search.brave.com/_Ej8ekHKNr_j4vwE1r2tDEZjNvJQJsxzjng1SwBWhZY/rs:fit:500:0:1:0/g:ce/aHR0cHM6Ly9tZWRp/YS5pc3RvY2twaG90/by5jb20vaWQvMTA2/MjkzMjgyMi9waG90/by9kaWdpdGFsLW1h/cmtldGluZy1tYW5h/Z2VyLXdvcmtpbmct/b24tc29jaWFsLW1l/ZGlhLW5ldHdvcmst/aW50ZXJuZXQtd2Vi/c2l0ZS1tb2JpbGUt/YW5kLWVtYWlsLmpw/Zz9zPTYxMng2MTIm/dz0wJms9MjAmYz10/ckNya2diSWFOSmpC/RmlydFRaSHlneUN6/bnZPbFFhWmxSSnQ0/VDdkWWIwPQ",
+    language: "English",
+    price: "Free",
+  },
+  {
+    id: 6,
+    title: "Digital Marketing Advanced",
+    category: "Marketing",
+    description: "Advanced strategies for campaigns and analytics.",
+    thumbnail: "https://imgs.search.brave.com/d42U5XvY087mA2C-pvdpMroR_KHUGn81Wkxqm8a3AQM/rs:fit:500:0:1:0/g:ce/aHR0cHM6Ly9jZG4u/cGl4YWJheS5jb20v/cGhvdG8vMjAxOS8w/NS8yNi8wNi8wNS9k/aWdpdGFsLW1hcmtl/dGluZy00MjI5NjM3/XzY0MC5qcGc",
+    language: "English",
+    price: "Paid",
+  },
 ];
 
 const CourseList = () => {
@@ -87,9 +141,9 @@ const CourseList = () => {
   });
 
   return (
-    <div className="flex h-screen bg-gradient-to-br from-white to-blue-200">
+    <div className="flex h-[calc(100vh-64px)] bg-gradient-to-br from-white to-blue-200">
       {/* Sidebar */}
-      <div className="hidden md:flex flex-col w-60 h-screen p-4 bg-white shadow space-y-4">
+      <div className="hidden md:flex flex-col w-60 h-full  p-4 bg-white shadow space-y-4">
         <h2 className="text-xl font-bold mb-2">Filters</h2>
         <div>
           <label className="block font-semibold mb-1">Category</label>
