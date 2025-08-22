@@ -7,14 +7,20 @@ import Pricing from "./pages/Pricing";
 import Login from "./pages/Login";
 import SignUp from "./pages/SignUp";
 import "./App.css";
-import CreateCourse from "./pages/CreateCourse";
+// import CreateCourse from "./pages/CreateCourse";
+import CourseDetails from "./pages/CourseDetails";
+import Payment from "./Components/Payment";
+import Account from "./pages/Profile";
 
 const App = () => {
   return (
     <>
     <BrowserRouter>
       <Header />
-      <CreateCourse />
+      <Account/>
+      {/* <Payment/> */}
+      {/* <CourseDetails/> */}
+      {/* <CreateCourse /> */}
     </BrowserRouter>
     </>
     // <BrowserRouter>
