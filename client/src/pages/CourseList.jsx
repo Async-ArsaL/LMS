@@ -141,9 +141,9 @@ const CourseList = () => {
   });
 
   return (
-    <div className="flex h-[calc(100vh-64px)] bg-gradient-to-br from-white to-blue-200">
+    <div className="flex h-screen bg-gradient-to-br from-white to-blue-200">
       {/* Sidebar */}
-      <div className="hidden md:flex flex-col w-60 h-full  p-4 bg-white shadow space-y-4">
+      <div className="hidden md:flex flex-col w-60 h-full p-4 bg-white shadow space-y-4">
         <h2 className="text-xl font-bold mb-2">Filters</h2>
         <div>
           <label className="block font-semibold mb-1">Category</label>
@@ -206,7 +206,7 @@ const CourseList = () => {
       {/* Courses Area */}
       <div className="flex-1 flex flex-col h-screen overflow-hidden">
         {/* Top bar */}
-        <div className="flex justify-between items-center p-4 bg-white shadow-md h-20">
+        <div className="flex justify-between items-center p-4 bg-white  shadow-md h-20">
           <h1 className="text-2xl font-bold">Browse Courses</h1>
           {/* Mobile filter button */}
           <button

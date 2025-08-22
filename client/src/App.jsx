@@ -1,15 +1,34 @@
 import React from "react";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import Header from "./Components/Header";
+import Home from "./pages/Home";
 import CourseList from "./pages/CourseList";
-import AdminDashBoard from "./pages/AdminDashBoard";
-import Header from "./pages/Header";
+import Pricing from "./pages/Pricing";
+import Login from "./pages/Login";
+import SignUp from "./pages/SignUp";
+import "./App.css";
+import CreateCourse from "./pages/CreateCourse";
 
 const App = () => {
   return (
-    <div>
+    <>
+    <BrowserRouter>
       <Header />
-      <CourseList  />
-      {/* <AdminDashBoard/> */}
-    </div>
+      <CreateCourse />
+    </BrowserRouter>
+    </>
+    // <BrowserRouter>
+    //   <div className="min-h-screen bg-gray-50">
+    //     <Header/>
+    //     <Routes>
+    //       <Route path="/" element={<Home/>} />
+    //       <Route path="/courses" element={<CourseList/>} />
+    //       <Route path="/pricing" element={<Pricing/>} />
+    //       <Route path="/login" element={<Login/>} />
+    //       <Route path="/signup" element={<SignUp/>} />
+    //     </Routes>
+    //   </div>
+    // </BrowserRouter>
   );
 };
 
