@@ -18,7 +18,7 @@ const SignUp = () => {
   }
 
   return (
-    <div className="h- h-[calc(100vh-65px)] flex items-center justify-center bg-gradient-to-br from-white to-blue-200 px-4 ">
+    <div className="h- h-[calc(100vh-65px)] bg-gradient-to-br from-white to-blue-200 flex items-center justify-center  px-4 ">
       <div className="max-w-md w-full bg-gradient-to-br from-white to-blue-100 p-6 rounded-lg border-2 border-blue-100 shadow-md">
         <div className="text-center">
           <h2 className="text-3xl font-bold text-gray-900 mb-2">

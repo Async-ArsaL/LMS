@@ -2,9 +2,10 @@ import React from "react";
 
 export default function Account() {
   return (
-    <div   className="max-w-4xl mx-auto p-8 font-sans text-gray-900 overflow-hidden"
-  style={{ height: 'calc(100vh - 80px)' }}>
-      <div className="flex flex-col md:flex-row h-full">
+    <div className="bg-gradient-to-br from-white to-blue-200 h-[calc(100vh-64px)]">
+    <div   className="max-w-4xl mx-auto p-8  font-sans text-gray-900  bg-gradient-to-br from-white to-blue-100   overflow-hidden"
+  style={{ height: 'calc(100vh - 60px)' }}>
+      <div className="flex flex-col md:flex-row h-full ">
         {/* Sidebar */}
         <aside className="md:w-1/4 md:pr-6 md:border-r flex flex-col justify-between  md:border-gray-200 mb-8 md:mb-0">
           <div className="flex flex-col items-center justify-center mb-6">
@@ -94,6 +95,7 @@ export default function Account() {
           </div>
         </main>
       </div>
+    </div>
     </div>
   );
 }

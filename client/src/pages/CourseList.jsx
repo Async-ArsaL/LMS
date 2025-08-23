@@ -1,4 +1,6 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
+
 
 const courses = [
   {
@@ -140,6 +142,14 @@ const CourseList = () => {
     );
   });
 
+
+  const navigate = useNavigate(); 
+
+
+  const gotToCourseDetails = ()=>{
+    navigate("/courseDetails")
+  }
+
   return (
     <div className="flex h-screen bg-gradient-to-br from-white to-blue-200">
       {/* Sidebar */}
@@ -231,7 +241,7 @@ const CourseList = () => {
                     <p className="text-gray-500 text-sm mb-1">{course.category}</p>
                     <p className="text-gray-700 text-sm mb-2">{course.description}</p>
                     <div className="flex space-x-2">
-                      <button className="bg-green-500 hover:bg-green-600 text-white py-1 px-2 rounded text-sm">
+                      <button onClick={gotToCourseDetails} className="bg-green-500 hover:bg-green-600 text-white py-1 px-2 rounded text-sm">
                         Enroll
                       </button>
                       <button className="bg-yellow-500 hover:bg-yellow-600 text-white py-1 px-2 rounded text-sm">

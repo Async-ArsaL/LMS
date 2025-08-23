@@ -25,6 +25,7 @@ const Header = () => {
             <Link to="/" className="text-gray-800 hover:text-blue-600">Home</Link>
             <Link to="/courses" className="text-gray-800 hover:text-blue-600">Courses</Link>
             <Link to="/pricing" className="text-gray-800 hover:text-blue-600">Pricing</Link>
+            <Link to="/profile" className="text-gray-800 hover:text-blue-600">Profile</Link>
             <Link to="/login" className="text-gray-800 hover:text-blue-600">Login</Link>
             <Link to="/signup" className="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700">
               Sign Up
@@ -32,7 +33,7 @@ const Header = () => {
           </div>
 
           {/* Mobile Menu Button */}
-          <div className="md:hidden">
+          <div className="md:hidden ">
             <button
               onClick={() => setIsMenuOpen(!isMenuOpen)}
               className="text-gray-700 hover:text-blue-600 focus:outline-none text-2xl"
@@ -45,7 +46,7 @@ const Header = () => {
         {/* Mobile Menu */}
         {isMenuOpen && (
           <div className="md:hidden py-2">
-            <div className="flex flex-col space-y-2 pb-3 pt-2">
+            <div className="flex flex-col  h-screen space-y-2 pb-3 pt-2">
               <Link 
                 to="/" 
                 className="text-gray-800 hover:text-blue-600 px-3 py-2 text-base font-medium"
@@ -74,6 +75,15 @@ const Header = () => {
               >
                 Login
               </Link>
+
+               <Link 
+                to="/profile" 
+                className="text-gray-800 hover:text-blue-600 px-3 py-2 text-base font-medium"
+                onClick={() => setIsMenuOpen(false)}
+              >
+                Profile
+              </Link>
+
               <Link 
                 to="/signup" 
                 className="bg-blue-600 text-white px-3 py-2 rounded-md hover:bg-blue-700 text-base font-medium text-center mx-3"

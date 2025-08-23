@@ -6,35 +6,30 @@ import CourseList from "./pages/CourseList";
 import Pricing from "./pages/Pricing";
 import Login from "./pages/Login";
 import SignUp from "./pages/SignUp";
-import "./App.css";
-// import CreateCourse from "./pages/CreateCourse";
+import Profile from "./pages/Profile";
 import CourseDetails from "./pages/CourseDetails";
-import Payment from "./Components/Payment";
-import Account from "./pages/Profile";
+import "./App.css";
+
 
 const App = () => {
   return (
     <>
-    <BrowserRouter>
-      <Header />
-      <Account/>
-      {/* <Payment/> */}
-      {/* <CourseDetails/> */}
-      {/* <CreateCourse /> */}
-    </BrowserRouter>
+      <BrowserRouter>
+        <div className="min-h-screen bg-gray-50">
+          <Header />
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/courses" element={<CourseList />} />
+            <Route path="/pricing" element={<Pricing />} />
+            <Route path="/login" element={<Login />} />
+             <Route path="/profile" element={<Profile/>} />
+            <Route path="/signup" element={<SignUp />} />
+            <Route path="/courseDetails" element={<CourseDetails />} />
+
+          </Routes>
+        </div>
+      </BrowserRouter>
     </>
-    // <BrowserRouter>
-    //   <div className="min-h-screen bg-gray-50">
-    //     <Header/>
-    //     <Routes>
-    //       <Route path="/" element={<Home/>} />
-    //       <Route path="/courses" element={<CourseList/>} />
-    //       <Route path="/pricing" element={<Pricing/>} />
-    //       <Route path="/login" element={<Login/>} />
-    //       <Route path="/signup" element={<SignUp/>} />
-    //     </Routes>
-    //   </div>
-    // </BrowserRouter>
   );
 };
 
