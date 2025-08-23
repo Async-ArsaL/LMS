@@ -5,8 +5,25 @@ const Login = () => {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
 
-  const handleSubmit = (e) => {
+   const [message, setMessage] = useState('')
+
+  const handleSubmit = async(e) => {
     e.preventDefault()
+
+     try {
+      const res = await fetch("http://localhost:5000/api/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email, password }),
+      });
+
+      const data = await res.json();
+      setMessage(data.message);
+      alert("User Login Succesfully")
+    } catch (err) {
+      console.log(err);
+      setMessage("Server Error");
+    }
     // Handle login logic here
 
     setEmail("");
@@ -64,7 +81,7 @@ const Login = () => {
 
           <button
             type="submit"
-            className="w-full flex justify-center py-3 px-4 border border-transparent rounded-lg shadow-sm text-lg font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+            className="w-full  cursor-pointer flex justify-center py-3 px-4 border border-transparent rounded-lg shadow-sm text-lg font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
           >
             Log in
           </button>

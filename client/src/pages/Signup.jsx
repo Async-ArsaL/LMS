@@ -5,15 +5,33 @@ const SignUp = () => {
   const [fullName, setFullName] = useState('')
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
+  const [message, setMessage] = useState('')
 
-  const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
     e.preventDefault()
-    // Handle signup logic here
 
+    
+    try {
+      const res = await fetch("http://localhost:5000/api/signup", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({fullname: fullName, email, password }),
+      });
+
+      const data = await res.json();
+      setMessage(data.message);
+      alert("User SignUp Succesfully")
+    } catch (err) {
+      console.log(err);
+      setMessage("Server Error");
+    }
+
+    //Handle signup logic here
     setFullName("")
     setEmail("")
     setPassword("")
-    // console.log( "userdata", fullName, email, password)
+    console.log( "userdata", fullName, email, password);
+
     
   }
 
@@ -73,7 +91,7 @@ const SignUp = () => {
 
           <button
             type="submit"
-            className="w-full flex justify-center py-2.5 px-4 border border-transparent rounded-lg shadow-sm text-base font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+            className="w-full cursor-pointer flex justify-center py-2.5 px-4 border border-transparent rounded-lg shadow-sm text-base font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
           >
             Sign Up
           </button>
