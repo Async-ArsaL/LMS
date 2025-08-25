@@ -10,12 +10,11 @@ const SignUp = () => {
     const handleSubmit = async (e) => {
     e.preventDefault()
 
-    
     try {
-      const res = await fetch("http://localhost:5000/api/signup", {
+      const res = await fetch("http://localhost:4000/api/v1/signup", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({fullname: fullName, email, password }),
+        body: JSON.stringify({name: fullName, email, password }),
       });
 
       const data = await res.json();
@@ -53,6 +52,7 @@ const SignUp = () => {
               <input
                 id="fullName"
                 name="fullName"
+                 autoComplete="fullname"
                 type="text"
                 required
                 value={fullName}
@@ -66,6 +66,7 @@ const SignUp = () => {
               <input
                 id="email"
                 name="email"
+                autoComplete="email"
                 type="email"
                 required
                 value={email}
@@ -79,6 +80,7 @@ const SignUp = () => {
               <input
                 id="password"
                 name="password"
+                autoComplete="password"
                 type="password"
                 required
                 value={password}

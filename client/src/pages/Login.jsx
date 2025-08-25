@@ -11,7 +11,7 @@ const Login = () => {
     e.preventDefault()
 
      try {
-      const res = await fetch("http://localhost:5000/api/login", {
+      const res = await fetch("http://localhost:4000/api/v1/login", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email, password }),
@@ -19,12 +19,12 @@ const Login = () => {
 
       const data = await res.json();
       setMessage(data.message);
-      alert("User Login Succesfully")
+      alert("user Login Succesfully")
     } catch (err) {
       console.log(err);
       setMessage("Server Error");
     }
-    // Handle login logic here
+    // // Handle login logic here
 
     setEmail("");
     setPassword("");
@@ -53,6 +53,7 @@ const Login = () => {
               <input
                 id="email"
                 name="email"
+                autoComplete="email"
                 type="email"
                 required
                 value={email}
@@ -69,6 +70,7 @@ const Login = () => {
               <input
                 id="password"
                 name="password"
+                autoComplete="password"
                 type="password"
                 required
                 value={password}

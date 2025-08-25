@@ -1,6 +1,8 @@
 const express = require('express');
 const app = express();
 const cookieParser = require("cookie-parser");
+// const  dotenv = require("dotenv");
+// dotenv.config()
 
 
 //load config fromm env file
@@ -20,6 +22,8 @@ const studentRoutes = require('./routes/student');
 const courseRoutes = require('./routes/course');
 const instructorRoutes = require('./routes/instructor');
 const adminRoutes = require('./routes/admin');
+const cors = require('cors');
+app.use(cors()); 
 
 //mount the user aspi routes
 app.use("/api/v1", userRoutes);
