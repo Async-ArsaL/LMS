@@ -9,6 +9,8 @@ import SignUp from "./pages/SignUp";
 import Profile from "./pages/Profile";
 import CourseDetails from "./pages/CourseDetails";
 import "./App.css";
+import StudentDashBoard from "./pages/StudentDashBoard";
+import AdminControl from "./pages/AdminControl";
 
 
 const App = () => {
@@ -25,6 +27,8 @@ const App = () => {
              <Route path="/profile" element={<Profile/>} />
             <Route path="/signup" element={<SignUp />} />
             <Route path="/courseDetails" element={<CourseDetails />} />
+            <Route path="/studentDashBoard" element={<StudentDashBoard/>} />
+            <Route path="/adminControl" element={<AdminControl/>} />
 
           </Routes>
         </div>
