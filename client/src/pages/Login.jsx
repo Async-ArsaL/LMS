@@ -1,16 +1,17 @@
-import React, { useState } from 'react'
-import { Link } from 'react-router-dom'
+import React, { useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 
 const Login = () => {
-  const [email, setEmail] = useState('')
-  const [password, setPassword] = useState('')
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [message, setMessage] = useState('');
 
-   const [message, setMessage] = useState('')
+  const navigate = useNavigate();
 
-  const handleSubmit = async(e) => {
-    e.preventDefault()
+  const handleLogin = async (e) => {
+    e.preventDefault();
 
-     try {
+    try {
       const res = await fetch("http://localhost:4000/api/v1/login", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -18,38 +19,43 @@ const Login = () => {
       });
 
       const data = await res.json();
-      setMessage(data.message);
-      alert("user Login Succesfully")
+
+            console.log("Login response:", data)
+
+      if (res.ok) {
+         localStorage.setItem("token", data.token); // token save
+        const userRole = data.user.role; // Backend se role mil raha hai
+
+        // Role-based redirect
+        if (userRole === "Admin") navigate("/adminDashboard");
+        else if (userRole === "Student") navigate("/");
+        else if (userRole === "Instructor") navigate("/course-creation");
+        else navigate("/"); // fallback
+
+        alert("Login Successful!");
+      } else {
+        setMessage(data.message || "Login Failed");
+        alert("Login Failed: " + (data.message || "Try again"));
+      }
     } catch (err) {
       console.log(err);
       setMessage("Server Error");
+      alert("Server Error");
     }
-    // // Handle login logic here
-
-    setEmail("");
-    setPassword("");
-
-    // console.log("logindata:", email, password)
-  }
+  };
 
   return (
-    <div className="min- h-[calc(100vh-65px)] bg-gradient-to-br from-white to-blue-200  flex items-center justify-center py-10 px-4 sm:px-6 lg:px-8 mb-4">
-      <div className="max-w-md w-full space-y-6 bg-gradient-to-br from-white to-blue-100 border-2 border-blue-100  p-6 rounded-lg shadow-md">
+    <div className="min-h-[calc(100vh-65px)] bg-gradient-to-br from-white to-blue-200 flex items-center justify-center px-4 py-10">
+      <div className="max-w-md w-full bg-white p-6 rounded-lg border-2 border-blue-100 shadow-md space-y-6">
         <div className="text-center">
-          <h2 className="text-4xl font-bold text-gray-900 mb-4">
-            Welcome Back
-          </h2>
-          <p className="text-lg text-gray-600">
-            Log in to access your learning journey.
-          </p>
+          <h2 className="text-4xl font-bold text-gray-900 mb-4">Welcome Back</h2>
+          <p className="text-lg text-gray-600">Log in to access your learning journey.</p>
         </div>
 
-        <form className="mt-8 space-y-6" onSubmit={handleSubmit}>
-          <div className="space-y-6">
+        <form className="mt-8 space-y-6" onSubmit={handleLogin}>
+          <div className="space-y-4">
             <div>
-              <label htmlFor="email" className="block text-lg font-medium text-gray-700">
-                Email Address
-              </label>
+              <label htmlFor="email" className="block text-lg font-medium text-gray-700">Email Address</label>
               <input
                 id="email"
                 name="email"
@@ -58,15 +64,13 @@ const Login = () => {
                 required
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                className="mt-2 appearance-none rounded-lg relative block w-full px-3 py-3 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-blue-500 focus:border-blue-500 focus:z-10 text-lg"
                 placeholder="john@example.com"
+                className="mt-2 w-full px-3 py-3 border rounded-lg text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-blue-500 focus:border-blue-500"
               />
             </div>
 
             <div>
-              <label htmlFor="password" className="block text-lg font-medium text-gray-700">
-                Password
-              </label>
+              <label htmlFor="password" className="block text-lg font-medium text-gray-700">Password</label>
               <input
                 id="password"
                 name="password"
@@ -75,34 +79,33 @@ const Login = () => {
                 required
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                className="mt-2 appearance-none rounded-lg relative block w-full px-3 py-3 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-blue-500 focus:border-blue-500 focus:z-10 text-lg"
                 placeholder="Enter your password"
+                className="mt-2 w-full px-3 py-3 border rounded-lg text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-blue-500 focus:border-blue-500"
               />
             </div>
           </div>
 
           <button
             type="submit"
-            className="w-full  cursor-pointer flex justify-center py-3 px-4 border border-transparent rounded-lg shadow-sm text-lg font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+            className="w-full py-3 cursor-pointer rounded-lg bg-blue-600 text-white font-medium hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
           >
             Log in
           </button>
 
           <div className="flex items-center justify-between mt-4 text-base">
-            <Link to="/forgot-password" className="text-gray-600 hover:text-blue-500">
-              Forgot password?
-            </Link>
+            <Link to="/forgot-password" className="text-gray-600 hover:text-blue-500">Forgot password?</Link>
             <div className="flex items-center">
               <span className="text-gray-600">New here?</span>
-              <Link to="/signup" className="ml-2 text-blue-600 hover:text-blue-500 font-medium">
-                Sign up
-              </Link>
+              <Link to="/signup" className="ml-2 text-blue-600 hover:text-blue-500 font-medium">Sign up</Link>
             </div>
           </div>
+
+          {message && <p className="text-red-500 text-sm mt-2">{message}</p>}
         </form>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default Login
+export default Login;
+
