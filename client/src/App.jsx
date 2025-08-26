@@ -10,7 +10,10 @@ import Profile from "./pages/Profile";
 import CourseDetails from "./pages/CourseDetails";
 import AdminDashBoard from "./pages/AdminDashBoard";
 import ProtectedRoute from "./Components/ProtectRoutes";
+import StudentDashBoard from "./pages/StudentDashBoard";
+import AdminControl from "./pages/AdminControl" 
 import "./App.css";
+
 
 
 const App = () => {
@@ -21,13 +24,16 @@ const App = () => {
           <Header />
           <Routes>
             <Route path="/" element={<Home/>}/>
+            <Route path="/login" element={<Login />} />
+            <Route path="/signup" element={<SignUp />} />
             <Route path="/courses" element={<ProtectedRoute> <CourseList /> </ProtectedRoute>} />
             <Route path="/pricing" element={<ProtectedRoute> <Pricing/> </ProtectedRoute>} />
-            <Route path="/login" element={<Login />} />
              <Route path="/profile" element={<ProtectedRoute> <Profile/> </ProtectedRoute>} />
-            <Route path="/signup" element={ <SignUp/>}/>
             <Route path="/courseDetails" element={<ProtectedRoute> <CourseDetails/> </ProtectedRoute>} />
-            <Route path="/adminDashboard" element={<ProtectedRoute> <AdminDashBoard/> </ProtectedRoute>} />
+             <Route path="/profile" element={<Profile/>} />
+            <Route path="/courseDetails" element={<CourseDetails />} />
+            <Route path="/studentDashBoard" element={<StudentDashBoard/>} />
+            <Route path="/adminControl" element={<AdminControl/>} />
           </Routes>
         </div>
       </BrowserRouter>
