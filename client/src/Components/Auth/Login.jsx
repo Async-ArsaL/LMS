@@ -24,14 +24,16 @@ const Login = () => {
 
       if (res.ok) {
          localStorage.setItem("token", data.token); // token save
+         localStorage.setItem("name", data.user.name);
+         localStorage.setItem("role", data.user.role);
+
         const userRole = data.user.role; // Backend se role mil raha hai
 
         // Role-based redirect
         if (userRole === "Admin") navigate("/adminDashboard");
-        else if (userRole === "Student") navigate("/");
-        else if (userRole === "Instructor") navigate("/course-creation");
+        else if (userRole === "Student") navigate("/studentDashBoard");
+        else if (userRole === "Instructor") navigate("/adminControl");
         else navigate("/"); // fallback
-
         alert("Login Successful!");
       } else {
         setMessage(data.message || "Login Failed");
@@ -64,7 +66,7 @@ const Login = () => {
                 required
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                placeholder="john@example.com"
+                placeholder="Enter your email"
                 className="mt-2 w-full px-3 py-3 border rounded-lg text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-blue-500 focus:border-blue-500"
               />
             </div>
@@ -99,8 +101,6 @@ const Login = () => {
               <Link to="/signup" className="ml-2 text-blue-600 hover:text-blue-500 font-medium">Sign up</Link>
             </div>
           </div>
-
-          {message && <p className="text-red-500 text-sm mt-2">{message}</p>}
         </form>
       </div>
     </div>
@@ -108,4 +108,3 @@ const Login = () => {
 };
 
 export default Login;
-

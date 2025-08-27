@@ -16,11 +16,15 @@ const StudentDashBoard = () => {
         }
     ];
 
+    const name = localStorage.getItem("name");
+
+
+
     return (
         <div className="bg-gradient-to-br from-white to-blue-200 h-screen p-4 md:p-8 font-sans overflow-hidden">
             {/* Header */}
             <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-4 gap-3">
-                <h1 className="text-2xl font-bold text-gray-800">Welcome back, Jane Doe!</h1>
+                <h1 className="text-2xl font-bold text-gray-800">Welcome back, {name}!</h1>
                 <button className="bg-blue-600 hover:bg-blue-700 text-white px-5 py-2 rounded-md text-sm cursor-pointer border-none">
                     Explore New Courses
                 </button>

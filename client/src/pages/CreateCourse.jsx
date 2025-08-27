@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 
-const CreateCourse = ({formData}) => {
+const CreateCourse = () => {
   const [formData, setFormData] = useState({
     title: "",
     desc: "",

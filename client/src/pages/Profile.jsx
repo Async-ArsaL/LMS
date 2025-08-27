@@ -1,6 +1,9 @@
 import React from "react";
 
 export default function Account() {
+
+  const name = localStorage.getItem("name");
+
   return (
     <div className="bg-gradient-to-br from-white to-blue-200 h-[calc(100vh-64px)]">
     <div   className="max-w-4xl mx-auto p-8  font-sans text-gray-900  bg-gradient-to-br from-white to-blue-100   overflow-hidden"
@@ -10,7 +13,7 @@ export default function Account() {
         <aside className="md:w-1/4 md:pr-6 md:border-r flex flex-col justify-between  md:border-gray-200 mb-8 md:mb-0">
           <div className="flex flex-col items-center justify-center mb-6">
             <div className="w-24 h-24 rounded-full mb-3 bg-gray-200" />
-          <p className="font-semibold text-center mb-4">Profile Info</p>
+          <p className="font-semibold text-center mb-4">{name}</p>
           <button className="text-blue-600 text-sm w-full mb-8 hover:underline focus:outline-none">
             Change Password
           </button>

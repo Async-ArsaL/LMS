@@ -53,13 +53,13 @@ const Header = () => {
                   to="/signup"
                   className="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700"
                 >
-                  Sign Up
+                  SignUp
                 </Link>
               </>
             ) : (
               <button
                 onClick={handleLogout}
-                className="bg-red-900 cursor-pointer text-white px-4 py-1 rounded-md hover:bg-red-900"
+                className="bg-red-900 cursor-pointer text-white px-4 py-2 rounded-md hover:bg-red-900"
               >
                 Logout
               </button>

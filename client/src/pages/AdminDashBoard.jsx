@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 const stats = [
   {
@@ -78,14 +79,22 @@ const stats = [
 
 const tabs = ['Dashboard', 'My Courses', 'Reviews', 'Earnings', 'Messages'];
 
+
 const AdminDashBoard = () => {
   const [activeTab, setActiveTab] = useState(0);
+  const navigate = useNavigate(); 
+
+  const name = localStorage.getItem("name");
+
+   const goToCreateCourse = ()=>{
+    navigate("/CreateCourse")
+   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center p-4 sm:p-6 md:p-8 bg-gray-100">
-      <div className="bg-white rounded-xl shadow-lg w-full max-w-7xl p-4 sm:p-6 md:p-8 flex flex-col">
+    <div className="min-h-screen flex items-center justify-center p-4 sm:p-6 md:p-8 bg-gradient-to-br from-white to-blue-200 ">
+      <div className="bg-gradient-to-br from-white to-blue-200  rounded-xl shadow-lg w-full max-w-7xl p-4 sm:p-6 md:p-8 flex flex-col">
         <h1 className="text-2xl sm:text-3xl font-bold mb-2 text-start">
-          Welcome back, Instructor Name!
+          Welcome back, {name}!
         </h1>
         <p className="text-start text-gray-500 mb-4 sm:mb-6 text-sm sm:text-base">
           Your teaching stats at a glance.
@@ -126,10 +135,10 @@ const AdminDashBoard = () => {
 
         {/* Buttons */}
         <div className="flex flex-col sm:flex-row justify-center gap-4 sm:gap-8 mt-6 sm:mt-14">
-          <button className="w-full sm:w-auto px-6 py-2 sm:px-8 sm:py-3 bg-blue-600 text-white rounded-lg text-lg sm:text-xl font-bold hover:bg-blue-700 transition">
+          <button onClick={goToCreateCourse} className="w-full cursor-pointer sm:w-auto px-6 py-2 sm:px-8 sm:py-3 bg-blue-600 text-white rounded-lg text-lg sm:text-xl font-bold hover:bg-blue-700 transition">
             Create New Course
           </button>
-          <button className="w-full sm:w-auto px-6 py-2 sm:px-8 sm:py-3 border-2 border-blue-600 text-blue-600 rounded-lg text-lg sm:text-xl font-bold hover:bg-blue-600 hover:text-white transition">
+          <button className="w-full cursor-pointer sm:w-auto px-6 py-2 sm:px-8 sm:py-3 border-2 border-blue-600 text-blue-600 rounded-lg text-lg sm:text-xl font-bold hover:bg-blue-600 hover:text-white transition">
             View Analytics
           </button>
         </div>
