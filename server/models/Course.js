@@ -3,9 +3,34 @@ const mongoose = require('mongoose');
 const courseSchema = new mongoose.Schema({
     title: {
         type: String,
+        required: true,
+        trim: true
     },
 
-    courseDescription: {
+    desc: {  
+        type: String,
+        required: true,
+        trim: true
+    },
+
+    category: {
+        type: String,
+        required: true,
+    },
+
+    level: {
+        type: String,
+        enum: ["easy", "medium", "hard"],
+        required: true,
+    },
+
+    price: {
+        type: Number,
+        required: true,
+        min: 0
+    },
+
+    thumbnail: { 
         type: String,
     },
 
@@ -14,18 +39,8 @@ const courseSchema = new mongoose.Schema({
         ref: 'User',
         required: true,
     }],
-
-    category: {
-        type: String,  
-        required: true,
-    },
-
-    createdAt: Date,
-    updatedAt: Date,
-
-    thumbnail: {
-        type: String,
-    },
+}, {
+    timestamps: true 
 });
 
 module.exports = mongoose.model("Course", courseSchema);

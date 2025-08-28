@@ -92,8 +92,8 @@ const AdminDashBoard = () => {
    }
 
   return (
-    <div className="min-h-screen flex items-center justify-center p-4 sm:p-6 md:p-8 bg-gradient-to-br from-white to-blue-200 ">
-      <div className="bg-gradient-to-br from-white to-blue-200  rounded-xl shadow-lg w-full max-w-7xl p-4 sm:p-6 md:p-8 flex flex-col">
+    <div className="h-[calc(100vh-64px)] flex items-center justify-center p-4 sm:p-6 md:p-8 bg-gradient-to-br from-white to-blue-200 ">
+      <div className="bg-gradient-to-br from-white to-blue-200  rounded-xl  w-full max-w-7xl p-4 sm:p-6 md:p-8 flex flex-col">
         <h1 className="text-2xl sm:text-3xl font-bold mb-2 text-start">
           Welcome back, {name}!
         </h1>

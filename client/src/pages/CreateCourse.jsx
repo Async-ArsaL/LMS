@@ -1,4 +1,7 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
+import CreateList from '../pages/CourseList'
 
 const CreateCourse = () => {
   const [formData, setFormData] = useState({
@@ -7,20 +10,73 @@ const CreateCourse = () => {
     category: "",
     level: "",
     img: null,
+    price: ""
   });
+  const [message, setMessage] = useState("");
+  const [token, setToken] = useState("");
+  const navigate = useNavigate();
 
-  // handle changes
+  // Get token from localStorage on component mount
+  useEffect(() => {
+    const storedToken = localStorage.getItem("token");
+    if (storedToken) setToken(storedToken);
+  }, []);
+
+  // handle input changes
   const handleChange = (e) => {
     const { name, value, files } = e.target;
-    setFormData((prev) => ({
+    setFormData(prev => ({
       ...prev,
-      [name]: files ? files[0] : value,
+      [name]: files ? files[0] : value
     }));
   };
 
-  const handleSubmit = (e) => {
+  // handle form submit
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log(formData);
+
+    if (!token) {
+      setMessage("Login first to create a course.");
+      return;
+    }
+
+    try {
+      const data = new FormData();
+      data.append("title", formData.title);
+      data.append("desc", formData.desc);
+      data.append("category", formData.category);
+      data.append("level", formData.level);
+      data.append("price", formData.price);
+      data.append("thumbnail", formData.img);
+
+      const res = await axios.post(
+        "http://localhost:4000/api/v5/course",
+        data,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+            "Authorization": `Bearer ${token}`
+          }
+        }
+      );
+
+      setMessage(res.data.message);
+       if(res.data.success){
+      navigate("/courses");
+    }
+
+      // Reset form
+      setFormData({
+        title: "",
+        desc: "",
+        category: "",
+        level: "",
+        img: null,
+        price: ""
+      });
+    } catch (error) {
+      setMessage(error.response?.data?.message || "Error creating course");
+    }
   };
 
   return (
@@ -30,8 +86,6 @@ const CreateCourse = () => {
         <h1 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-semibold text-black">
           Step: 1 Create Course
         </h1>
-
-        {/* Progress Bar */}
         <div className="flex-1 min-w-[150px] mt-2 h-2 bg-gray-200 rounded-full overflow-hidden">
           <div className="h-2 bg-blue-400 w-[30%] rounded-full"></div>
         </div>
@@ -42,65 +96,76 @@ const CreateCourse = () => {
         onSubmit={handleSubmit}
         className="flex flex-col flex-grow w-full sm:w-[90%] md:w-[80%] lg:w-[75%] rounded-lg p-3"
       >
-        {/* Course Title */}
         <label htmlFor="title">
           <h2 className="text-black font-semibold">Course Title</h2>
         </label>
         <input
           type="text"
-          onChange={handleChange}
-          className="w-full p-3 mt-2 mb-3 rounded-md border border-gray-300 outline-none focus:ring-1 focus:ring-blue-400"
-          placeholder="Enter course title"
           id="title"
           name="title"
           value={formData.title}
+          onChange={handleChange}
+          placeholder="Enter course title"
+          className="w-full p-3 mt-2 mb-3 rounded-md border border-gray-300 outline-none focus:ring-1 focus:ring-blue-400"
         />
 
-        {/* Description */}
         <label htmlFor="desc">
           <h2 className="text-black font-semibold">Description</h2>
         </label>
         <textarea
-          className="w-full p-3 mt-2 mb-3 rounded-md border border-gray-300 outline-none focus:ring-2 focus:ring-blue-400"
-          placeholder="Provide a clear, compelling description to attract students."
           id="desc"
           name="desc"
           value={formData.desc}
           onChange={handleChange}
+          placeholder="Provide a clear, compelling description to attract students."
           required
           rows="2"
-        ></textarea>
+          className="w-full p-3 mt-2 mb-3 rounded-md border border-gray-300 outline-none focus:ring-2 focus:ring-blue-400"
+        />
 
-        {/* Category */}
-        <label className="block font-semibold">Category</label>
-        <select
-          name="category"
-          value={formData.category}
-          onChange={handleChange}
-          required
-          className="w-full border border-gray-300 mt-2 mb-5 p-3 rounded text-sm"
-        >
-          <option value="">All</option>
-          <option value="Development">Development</option>
-          <option value="Data Science">Data Science</option>
-          <option value="AI/ML">AI/ML</option>
-          <option value="Marketing">Marketing</option>
-        </select>
-
-        {/* Level + Upload */}
         <div className="flex flex-col md:flex-row gap-2">
-          {/* Level */}
           <div className="w-full">
-            <label htmlFor="level">
-              <p className="block font-semibold">Level</p>
-            </label>
+            <label htmlFor="category"><h2 className="text-black font-semibold">Category</h2></label>
             <select
+              id="category"
+              name="category"
+              value={formData.category}
+              onChange={handleChange}
+              required
               className="w-full border border-gray-300 mt-2 mb-5 p-3 rounded text-sm"
+            >
+              <option value="">All</option>
+              <option value="Development">Development</option>
+              <option value="Data Science">Data Science</option>
+              <option value="AI/ML">AI/ML</option>
+              <option value="Marketing">Marketing</option>
+            </select>
+          </div>
+
+          <div className="w-full">
+            <label htmlFor="price"><h2 className="text-black font-semibold">Price</h2></label>
+            <input
+              type="number"
+              id="price"
+              name="price"
+              value={formData.price}
+              onChange={handleChange}
+              placeholder="Enter Course Price"
+              className="w-full p-3 mt-2 mb-3 rounded-md border border-gray-300 outline-none focus:ring-1 focus:ring-blue-400"
+            />
+          </div>
+        </div>
+
+        <div className="flex flex-col md:flex-row gap-2">
+          <div className="w-full">
+            <label htmlFor="level"><p className="block font-semibold">Level</p></label>
+            <select
+              id="level"
               name="level"
               value={formData.level}
               onChange={handleChange}
               required
-              id="level"
+              className="w-full border border-gray-300 mt-2 mb-5 p-3 rounded text-sm"
             >
               <option value="">All</option>
               <option value="hard">Hard</option>
@@ -109,56 +174,37 @@ const CreateCourse = () => {
             </select>
           </div>
 
-          {/* Upload Thumbnail */}
           <div className="w-full">
-            <label htmlFor="img">
-              <p className="font-semibold">Upload Thumbnail</p>
-            </label>
+            <label htmlFor="img"><p className="font-semibold">Upload Thumbnail</p></label>
             <input
-              required
               type="file"
               id="img"
               name="img"
               accept="image/*"
-              className="w-full px-3 py-2 mt-2 mb-3 border border-gray-300 rounded cursor-pointer"
               onChange={handleChange}
+              className="w-full px-3 py-2 mt-2 mb-3 border border-gray-300 rounded cursor-pointer"
             />
-            {formData.img && (
-              <p className="text-sm text-gray-600">
-                Selected: {formData.img.name}
-              </p>
-            )}
+            {formData.img && <p className="text-sm text-gray-600">Selected: {formData.img.name}</p>}
           </div>
         </div>
 
-        {/* Buttons */}
         <div className="flex flex-wrap justify-center md:justify-between gap-2 mt-3">
-          <button
-            type="submit"
-            className="w-full sm:w-[48%] md:w-[30%] lg:w-[27%] cursor-pointer py-3 bg-blue-500 text-white rounded-md shadow-md hover:bg-blue-600 transition"
-          >
+          <button type="submit" className="w-full sm:w-[48%] md:w-[30%] lg:w-[27%] cursor-pointer py-3 bg-blue-500 text-white rounded-md shadow-md hover:bg-blue-600 transition">
             Save & Next
           </button>
-          <button
-            type="button"
-            className="w-full sm:w-[48%] md:w-[30%] lg:w-[22%] cursor-pointer py-3 border rounded-md hover:bg-gray-100 transition"
-          >
+          <button type="button" className="w-full sm:w-[48%] md:w-[30%] lg:w-[22%] cursor-pointer py-3 border rounded-md hover:bg-gray-100 transition">
             Preview Course
           </button>
-          <button
-            type="button"
-            className="w-full sm:w-[48%] md:w-[20%] lg:w-[12%] cursor-pointer py-3 border rounded-md hover:bg-gray-100 transition"
-          >
+          <button type="button" className="w-full sm:w-[48%] md:w-[20%] lg:w-[12%] cursor-pointer py-3 border rounded-md hover:bg-gray-100 transition">
             Back
           </button>
-          <button
-            type="submit"
-            className="w-full sm:w-[48%] md:w-[30%] lg:w-[27%] cursor-pointer py-3 bg-green-500 text-white rounded-md shadow-md hover:bg-green-600 transition"
-          >
+          <button type="submit" className="w-full sm:w-[48%] md:w-[30%] lg:w-[27%] cursor-pointer py-3 bg-green-500 text-white rounded-md shadow-md hover:bg-green-600 transition">
             Publish Course
           </button>
         </div>
       </form>
+
+      {message && <p className="mt-4 text-black font-semibold">{message}</p>}
     </div>
   );
 };
