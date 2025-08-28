@@ -13,7 +13,7 @@ import AdminControl from "./pages/AdminControl"
 import Signup from "./Components/Auth/Signup";
 import Login from "./Components/Auth/Login";
 import CreateCourse from "./pages/CreateCourse";
-import EmailVerify from "./Components/EmailVerify";
+import Payment from "./Components/Payment";
 import "./App.css";
 
 const App = () => {
@@ -23,7 +23,7 @@ const App = () => {
         <div className="min-h-screen bg-gray-50">
           <Header />
           {/* <EmailVerify /> */}
-          <Routes>
+          {/* <Routes>
             <Route path="/" element={<Home/>}/>
             <Route path="/login" element={<Login />} />
             <Route path="/signup" element={<Signup />} />
@@ -36,11 +36,53 @@ const App = () => {
             <Route path="/studentDashBoard" element={<StudentDashBoard/>} />
             <Route path="/adminControl" element={<AdminControl/>} />
             <Route path="/CreateCourse" element={<CreateCourse/>} />
-            <Route path="/EmailVerify" element={<EmailVerify/>} />
+            <Route path="/payment" element={<Payment/>} />
+          </Routes> */}
 
 
-    
-          </Routes>
+          <Routes>
+  {/* Public Routes */}
+  <Route path="/" element={<Home />} />
+  <Route path="/login" element={<Login />} />
+  <Route path="/signup" element={<Signup />} />
+
+  {/* Student Routes */}
+  <Route 
+    path="/studentDashboard" 
+    element={<ProtectedRoute role="student"><StudentDashBoard /></ProtectedRoute>} 
+  />
+  <Route path="/courses" element={<ProtectedRoute role="student"><CourseList /></ProtectedRoute>} />
+  <Route path="/pricing" element={<ProtectedRoute role="student"><Pricing/></ProtectedRoute>} />
+  <Route path="/profile" element={<ProtectedRoute role="student"><Profile/></ProtectedRoute>} />
+  <Route path="/courseDetails" element={<ProtectedRoute role="student"><CourseDetails/></ProtectedRoute>} />
+  <Route path="/payment" element={<ProtectedRoute role="student"><Payment/></ProtectedRoute>} />
+
+  {/* Instructor Routes */}
+  <Route 
+    path="/createCourse" 
+    element={<ProtectedRoute role="instructor"><CreateCourse /></ProtectedRoute>} 
+  />
+  <Route 
+    path="/adminControl" 
+    element={<ProtectedRoute role="instructor"><AdminControl /></ProtectedRoute>} 
+  />
+
+  {/* Admin Routes */}
+  <Route 
+    path="/adminDashboard" 
+    element={<ProtectedRoute role="admin"><AdminDashBoard /></ProtectedRoute>} 
+  />
+  <Route 
+    path="/adminControl" 
+    element={<ProtectedRoute role="admin"><AdminControl /></ProtectedRoute>} 
+  />
+
+  {/* Unauthorized */}
+  <Route path="/unauthorized" element={<h1 className="text-center mt-20 text-red-600 text-2xl">🚫 Unauthorized Access</h1>} />
+</Routes>
+
+
+
         </div>
       </BrowserRouter>
     </>

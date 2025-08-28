@@ -14,8 +14,8 @@ const AdminControl = () => {
     const [activeAction, setActiveAction] = useState(null);
 
     return (
-        <div className=" min-h-screen h-screen w-full flex justify-center items-start bg-gray-100 overflow-hidden">
-            <div className="w-full  h-full bg-white p-6 md:p-8 text-gray-800 font-sans rounded-lg shadow-lg overflow-hidden flex flex-col">
+        <div className="  min-h-screen h-screen w-full flex justify-center items-start bg-gray-100 overflow-hidden">
+            <div className="w-full  h-full bg-gradient-to-br from-white to-blue-200 p-6 md:p-8 text-gray-800 font-sans rounded-lg shadow-lg overflow-hidden flex flex-col">
                 
                 {/* Header */}
                 <div className="mb-6">

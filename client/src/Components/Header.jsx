@@ -5,69 +5,88 @@ import { faBars, faXmark } from "@fortawesome/free-solid-svg-icons";
 
 const Header = () => {
   const navigate = useNavigate();
-  const token = localStorage.getItem("token"); // check login
-
-  const handleLogout = () => {
-    localStorage.removeItem("token"); // token delete karo
-    navigate("/login"); // login page pe redirect
-  };
-
-  const goToLogin = () => {
-    navigate("/");
-  };
+  const token = localStorage.getItem("token");
+  const role = localStorage.getItem("role")?.toLowerCase();
 
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
+  const handleLogout = () => {
+    localStorage.clear();
+    navigate("/login");
+    setIsMenuOpen(false); // logout pe menu bhi close ho jaye
+  };
+
+  const handleLinkClick = () => {
+    setIsMenuOpen(false); // kisi link pe click hote hi menu close ho jaye
+  };
+
+  //Role-based Links
+  const renderLinks = () => {
+    if (!token) {
+      return (
+        <>
+          <Link to="/" onClick={handleLinkClick} className="text-gray-800 hover:text-blue-600">Home</Link>
+          <Link to="/courses" onClick={handleLinkClick} className="text-gray-800 hover:text-blue-600">Courses</Link>
+          <Link to="/pricing" onClick={handleLinkClick} className="text-gray-800 hover:text-blue-600">Pricing</Link>
+          <Link to="/login" onClick={handleLinkClick} className="text-gray-800 hover:text-blue-600">Login</Link>
+          <Link to="/signup" onClick={handleLinkClick} className="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700">Sign Up</Link>
+        </>
+      );
+    }
+
+    if (role === "student") {
+      return (
+        <>
+          <Link to="/studentDashboard" onClick={handleLinkClick} className="text-gray-800 hover:text-blue-600">Dashboard</Link>
+          <Link to="/courses" onClick={handleLinkClick} className="text-gray-800 hover:text-blue-600">Courses</Link>
+          <Link to="/pricing" onClick={handleLinkClick} className="text-gray-800 hover:text-blue-600">Pricing</Link>
+          <Link to="/profile" onClick={handleLinkClick} className="text-gray-800 hover:text-blue-600">Profile</Link>
+          <button onClick={handleLogout} className="bg-red-600 text-white px-4 py-2 rounded-md hover:bg-red-700">Logout</button>
+        </>
+      );
+    }
+
+    if (role === "instructor") {
+      return (
+        <>
+          <Link to="/createCourse" onClick={handleLinkClick} className="text-gray-800 hover:text-blue-600">Create Course</Link>
+          <Link to="/adminControl" onClick={handleLinkClick} className="text-gray-800 hover:text-blue-600">Manage Courses</Link>
+          <Link to="/profile" onClick={handleLinkClick} className="text-gray-800 hover:text-blue-600">Profile</Link>
+          <button onClick={handleLogout} className="bg-red-600 text-white px-4 py-2 rounded-md hover:bg-red-700">Logout</button>
+        </>
+      );
+    }
+
+    if (role === "admin") {
+      return (
+        <>
+          <Link to="/adminDashboard" onClick={handleLinkClick} className="text-gray-800 hover:text-blue-600">Admin Dashboard</Link>
+          <Link to="/adminControl" onClick={handleLinkClick} className="text-gray-800 hover:text-blue-600">Admin Control</Link>
+          <button onClick={handleLogout} className="bg-red-600 text-white px-4 py-2 rounded-md hover:bg-red-700">Logout</button>
+        </>
+      );
+    }
+  };
+
   return (
-    <nav className="bg-gradient-to-br from-white to-blue-100 shadow-lg">
+    <nav className="bg-gradient-to-br from-white to-blue-100 shadow-lg ">
       <div className="max-w-7xl mx-auto px-4">
         <div className="flex justify-between items-center h-16">
-          <div onClick={goToLogin} className="flex-shrink-0 w-36 center mt-2">
-            {/* <Link to="/" className="text-2xl font-bold">Logo</Link> */}
+          {/* Logo */}
+          <div onClick={() => navigate("/")} className="flex-shrink-0 w-36 mt-2 cursor-pointer">
             <img
               src="https://anywhere.learn.co.th/main/wp-content/uploads/2020/01/Learncorp_Logo_Pack_2021_Learn-Anywhere-Primary-RGB.png"
-              alt=""
+              alt="Logo"
             />
           </div>
+
           {/* Desktop Menu */}
           <div className="hidden md:flex items-center space-x-8 font-semibold">
-            <Link to="/" className="text-gray-800 hover:text-blue-600">
-              Home
-            </Link>
-            <Link to="/courses" className="text-gray-800 hover:text-blue-600">
-              Courses
-            </Link>
-            <Link to="/pricing" className="text-gray-800 hover:text-blue-600">
-              Pricing
-            </Link>
-            <Link to="/profile" className="text-gray-800 hover:text-blue-600">
-              Profile
-            </Link>
-
-            {!token ? (
-              <>
-                <Link to="/login" className="text-gray-800 hover:text-blue-600">
-                  Login
-                </Link>
-                <Link
-                  to="/signup"
-                  className="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700"
-                >
-                  SignUp
-                </Link>
-              </>
-            ) : (
-              <button
-                onClick={handleLogout}
-                className="bg-red-900 cursor-pointer text-white px-4 py-2 rounded-md hover:bg-red-900"
-              >
-                Logout
-              </button>
-            )}
+            {renderLinks()}
           </div>
 
           {/* Mobile Menu Button */}
-          <div className="md:hidden ">
+          <div className="md:hidden">
             <button
               onClick={() => setIsMenuOpen(!isMenuOpen)}
               className="text-gray-700 hover:text-blue-600 focus:outline-none text-2xl"
@@ -77,55 +96,10 @@ const Header = () => {
           </div>
         </div>
 
-        {/* Mobile Menu */}
+        {/* Mobile Fullscreen Menu */}
         {isMenuOpen && (
-          <div className="md:hidden py-2">
-            <div className="flex flex-col  h-screen space-y-2 pb-3 pt-2">
-              <Link
-                to="/"
-                className="text-gray-800 hover:text-blue-600 px-3 py-2 text-base font-medium"
-                onClick={() => setIsMenuOpen(false)}
-              >
-                Home
-              </Link>
-              <Link
-                to="/courses"
-                className="text-gray-800 hover:text-blue-600 px-3 py-2 text-base font-medium"
-                onClick={() => setIsMenuOpen(false)}
-              >
-                Courses
-              </Link>
-              <Link
-                to="/pricing"
-                className="text-gray-800 hover:text-blue-600 px-3 py-2 text-base font-medium"
-                onClick={() => setIsMenuOpen(false)}
-              >
-                Pricing
-              </Link>
-              <Link
-                to="/login"
-                className="text-gray-800 hover:text-blue-600 px-3 py-2 text-base font-medium"
-                onClick={() => setIsMenuOpen(false)}
-              >
-                Login
-              </Link>
-
-              <Link
-                to="/profile"
-                className="text-gray-800 hover:text-blue-600 px-3 py-2 text-base font-medium"
-                onClick={() => setIsMenuOpen(false)}
-              >
-                Profile
-              </Link>
-
-              <Link
-                to="/signup"
-                className="bg-blue-600 text-white px-3 py-2 rounded-md hover:bg-blue-700 text-base font-medium text-center mx-3"
-                onClick={() => setIsMenuOpen(false)}
-              >
-                Sign Up
-              </Link>
-            </div>
+          <div className="fixed inset-0 bg-gradient-to-br from-white to-blue-200 shadow-lg   h-[calc(100vh-65px)] mt-[65px]  flex flex-col p-3 py-8 font-semibold space-y-6 text-2xl z-40">
+            {renderLinks()}
           </div>
         )}
       </div>
@@ -134,3 +108,6 @@ const Header = () => {
 };
 
 export default Header;
+
+
+

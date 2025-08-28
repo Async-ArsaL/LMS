@@ -27,6 +27,8 @@ const Signup = () => {
         alert("User SignUp Successfully");
         console.log("Userdata submitted:", { fullName, email, password, role });
         navigate("/login");
+
+
       } else {
         setMessage(data.message || "Signup Failed");
         alert("Signup Failed: " + (data.message || "Try again"));

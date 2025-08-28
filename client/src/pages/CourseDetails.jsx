@@ -1,6 +1,18 @@
 import React from "react";
+import { useNavigate } from "react-router-dom";
+
+
+
 
 const CourseDetails = () => {
+
+  const navigate = useNavigate();
+
+  const goToPayment = () =>{
+
+    navigate("/payment")
+}
+
   return (
     <div className="min-h-[calc(100vh-64px)] bg-gradient-to-br from-white to-blue-200 px-2 sm:px-6">
       {/* Main Card, FULL WIDTH on mobile/tablet */}
@@ -42,7 +54,7 @@ const CourseDetails = () => {
           <div className="text-lg sm:text-xl font-semibold mb-2">Buy this course</div>
           <div className="text-2xl sm:text-3xl font-bold mb-5">₹999</div>
           <div className="flex flex-col sm:flex-row gap-4">
-            <button className="flex-1 bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700 transition">
+            <button onClick={goToPayment} className="flex-1 cursor-pointer bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700 transition">
               Enroll Now
             </button>
             <button className="flex-1 border border-gray-500 px-6 py-3 rounded-lg hover:bg-gray-100 transition">

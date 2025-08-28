@@ -30,10 +30,12 @@ const Login = () => {
         const userRole = data.user.role; // Backend se role mil raha hai
 
         // Role-based redirect
+
         if (userRole === "Admin") navigate("/adminDashboard");
         else if (userRole === "Student") navigate("/studentDashBoard");
         else if (userRole === "Instructor") navigate("/adminControl");
         else navigate("/"); // fallback
+
         alert("Login Successful!");
       } else {
         setMessage(data.message || "Login Failed");
@@ -48,7 +50,7 @@ const Login = () => {
 
   return (
     <div className="min-h-[calc(100vh-65px)] bg-gradient-to-br from-white to-blue-200 flex items-center justify-center px-4 py-10">
-      <div className="max-w-md w-full bg-white p-6 rounded-lg border-2 border-blue-100 shadow-md space-y-6">
+      <div className="max-w-md w-full bg-gradient-to-br from-white to-blue-100 p-6 rounded-lg border-2 border-blue-100 shadow-md space-y-6">
         <div className="text-center">
           <h2 className="text-4xl font-bold text-gray-900 mb-4">Welcome Back</h2>
           <p className="text-lg text-gray-600">Log in to access your learning journey.</p>
