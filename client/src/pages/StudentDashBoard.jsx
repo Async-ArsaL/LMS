@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useContext } from 'react';
 
 const StudentDashBoard = () => {
     const courses = [
@@ -21,10 +21,10 @@ const StudentDashBoard = () => {
 
 
     return (
-        <div className="bg-gradient-to-br from-white to-blue-200 h-screen p-4 md:p-8 font-sans overflow-hidden">
+        <div className="bg-gradient-to-br from-white to-blue-200 h-screen p-4 md:p-8 font-sans overflow-auto">
             {/* Header */}
             <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-4 gap-3">
-                <h1 className="text-2xl font-bold text-gray-800">Welcome back, {name}!</h1>
+                <h1 className="text-2xl font-bold text-gray-800">Welcome back, {name} 👋</h1>
                 <button className="bg-blue-600 hover:bg-blue-700 text-white px-5 py-2 rounded-md text-sm cursor-pointer border-none">
                     Explore New Courses
                 </button>
@@ -109,7 +109,7 @@ const StudentDashBoard = () => {
                 <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between">
                     <p className="text-xs text-gray-600 mb-1 sm:mb-0">3IX0 - completed</p>
                     <div className="w-full sm:w-1/4 bg-gray-200 h-2 rounded mb-2 sm:ml-auto">
-                        <div className="bg-blue-200 h-2 rounded"></div>
+                        <div className="bg-blue-100 h-2 rounded"></div>
                     </div>
                 </div>
             </div>

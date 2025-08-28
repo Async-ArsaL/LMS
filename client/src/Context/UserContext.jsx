@@ -23,12 +23,13 @@ export const UserProvider = ({ children }) => {
 
   // Login function
   const loginUser = (userData, token) => {
-    setUser(userData);
-    setToken(token);
-    setIsLoggedIn(true);
-    localStorage.setItem("user", JSON.stringify(userData));
-    localStorage.setItem("token", token);
-  };
+  setUser(userData);        // userData = backend se jo "user" object aaya
+  setToken(token);          // backend se token
+  setIsLoggedIn(true);
+  localStorage.setItem("user", JSON.stringify(userData));
+  localStorage.setItem("token", token);
+};
+
 
   // Logout function
   const logoutUser = () => {
