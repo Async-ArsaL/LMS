@@ -26,7 +26,8 @@ const Signup = () => {
         setMessage(data.message);
         alert("User SignUp Successfully");
         console.log("Userdata submitted:", { fullName, email, password, role });
-        navigate("/login");
+        navigate("/login")
+        //navigate("/optVerification");
 
 
       } else {
@@ -101,9 +102,9 @@ const Signup = () => {
             onChange={(e) => setRole(e.target.value)}
             className="w-full px-3 py-2 border rounded-lg text-gray-900 focus:outline-none focus:ring-blue-500 focus:border-blue-500"
           >
-            <option value="Student">Student</option>
-            <option value="Instructor">Instructor</option>
-            <option value="Admin">Admin</option>
+            <option value="Student">Student</option> 
+            {/* <option value="Instructor">Instructor</option>
+            <option value="Admin">Admin</option> */}
           </select>
 
           <button
