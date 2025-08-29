@@ -6,21 +6,24 @@ const {
   getAdminById,
   updateAdmin,
   deleteAdmin,
+  getAdminStats,
 } = require("../controllers/Admin");
 
-//Create Admin
+router.get("/stats", getAdminStats);
+
+// Create Admin
 router.post("/", createAdmin);
 
-//Get All Admins
+// Get All Admins
 router.get("/", getAllAdmins);
 
-//Get Admin by ID
+// Get Admin by ID
 router.get("/:id", getAdminById);
 
-//Update Admin
+// Update Admin
 router.put("/:id", updateAdmin);
 
-//Delete Admin
+// Delete Admin
 router.delete("/:id", deleteAdmin);
 
 module.exports = router;
