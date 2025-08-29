@@ -1,14 +1,77 @@
 const User = require('../models/User');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
+const OTP = require('../models/OTP');
+const otpGenerator = require("otp-generator");
 require('dotenv').config();
+
+//send OTP
+exports.sendOTO = async (req, res) => {
+    try {
+        //fetch  email from request body
+        const { email } = req.body;
+
+        //check if user already exist
+        const checkUserPresent = await User.findOne({ email });
+
+        // if user already exist then return a response
+        if (checkUserPresent) {
+            return res.status(401).json({
+                success: false,
+                message: " User already registered",
+            })
+        }
+
+        //generate otp
+
+        var otp = otpGenerator.generate(6, {
+            uppercaseAlphabets: false,
+            lowerCaseAlphabets: false,
+            specialChars: false,
+        });
+        console.log("OTP Generator", otp);
+
+        //check unique otp or not
+        let result = await OTP.findOne({ otp: otp });
+
+        while (result) {
+            otp = otpGenerator(6, {
+                uppercaseAlphabets: false,
+                lowerCaseAlphabets: false,
+                specialChars: false,
+            });
+
+            result = await OTP.findOne({otp: otp});
+        }
+
+        const otpPayload = {email, otp};
+
+        //create an entry in DB
+        const otpBody = await OTP.create(otpPayload);
+        console.log(otpBody);
+
+        //return response successful
+        res.status(200).json({
+            success:true,
+            message:"OTP sent Successfully", otp
+        });
+
+    }
+    catch (error) {
+        console.log(error);
+        return res.status(500).json({
+            success: false,
+            message:error.message,
+        })
+    }
+}
 
 // signUp
 exports.signUp = async (req, res) => {
     try {
 
         // data fetch from request ki body
-        const { name, email, password, role} = req.body;
+        const { name, email, password, role } = req.body;
         //validation
         if (!name || !email || !password) {
             return res.status(403).json({
@@ -38,12 +101,12 @@ exports.signUp = async (req, res) => {
         })
         //return res
         return res.status(200).json({
-            success:true,
-            message:"User registered successfully", user,
+            success: true,
+            message: "User registered successfully", user,
         })
     }
 
-    catch(error){
+    catch (error) {
         console.log(error);
         return res.status(500).json({
             success: false,
