@@ -1,5 +1,5 @@
 import React from "react";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route} from "react-router-dom";
 import Header from "./Components/Header";
 import Home from "./pages/Home";
 import CourseList from "./pages/CourseList";
@@ -9,7 +9,7 @@ import CourseDetails from "./pages/CourseDetails";
 import AdminDashBoard from "./pages/AdminDashBoard";
 import ProtectedRoute from "./Components/ProtectRoutes";
 import StudentDashBoard from "./pages/StudentDashBoard";
-import AdminControl from "./pages/AdminControl" 
+import AdminControl from "./pages/AdminControl";
 import Signup from "./Components/Auth/Signup";
 import Login from "./Components/Auth/Login";
 import CreateCourse from "./pages/CreateCourse";
@@ -18,12 +18,13 @@ import OtpVerification from "./Components/Auth/OtpVerification";
 import "./App.css";
 
 const App = () => {
+
   return (
     <>
       <BrowserRouter>
         <div className="min-h-screen bg-gray-50">
           <Header />
-          
+        
           <Routes>
   {/* Public Routes */}
   <Route path="/" element={<Home />} />
@@ -70,11 +71,6 @@ const App = () => {
   {/* Unauthorized */}
   <Route path="/unauthorized" element={<h1 className="text-center mt-20 text-red-600 text-2xl">🚫 Unauthorized Access</h1>} />
 </Routes>
-
-
-
-
-
         </div>
       </BrowserRouter>
     </>

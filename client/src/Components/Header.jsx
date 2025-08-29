@@ -2,14 +2,16 @@ import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBars, faXmark } from "@fortawesome/free-solid-svg-icons";
+import { useEffect } from "react";
 
 const Header = () => {
   const navigate = useNavigate();
-  const token = localStorage.getItem("token");
-  const role = localStorage.getItem("role")?.toLowerCase();
-
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const token = localStorage.getItem("token");
+  const role = localStorage.getItem("role")?.toLowerCase()
 
+
+///
   const handleLogout = () => {
     localStorage.clear();
     navigate("/login");
@@ -41,7 +43,7 @@ const Header = () => {
           <Link to="/courses" onClick={handleLinkClick} className="text-gray-800 hover:text-blue-600">Courses</Link>
           <Link to="/pricing" onClick={handleLinkClick} className="text-gray-800 hover:text-blue-600">Pricing</Link>
           <Link to="/profile" onClick={handleLinkClick} className="text-gray-800 hover:text-blue-600">Profile</Link>
-          <button onClick={handleLogout} className="bg-red-600 text-white px-4 py-2 rounded-md hover:bg-red-700">Logout</button>
+          <button onClick={handleLogout} className="bg-red-600 cursor-pointer text-white px-4 py-2 rounded-md hover:bg-red-700">Logout</button>
         </>
       );
     }
@@ -52,7 +54,7 @@ const Header = () => {
           <Link to="/createCourse" onClick={handleLinkClick} className="text-gray-800 hover:text-blue-600">Create Course</Link>
           <Link to="/adminControl" onClick={handleLinkClick} className="text-gray-800 hover:text-blue-600">Manage Courses</Link>
           <Link to="/profile" onClick={handleLinkClick} className="text-gray-800 hover:text-blue-600">Profile</Link>
-          <button onClick={handleLogout} className="bg-red-600 text-white px-4 py-2 rounded-md hover:bg-red-700">Logout</button>
+          <button onClick={handleLogout} className="bg-red-600 cursor-pointer text-white px-4 py-2 rounded-md hover:bg-red-700">Logout</button>
         </>
       );
     }
@@ -62,7 +64,7 @@ const Header = () => {
         <>
           <Link to="/adminDashboard" onClick={handleLinkClick} className="text-gray-800 hover:text-blue-600">Admin Dashboard</Link>
           <Link to="/adminControl" onClick={handleLinkClick} className="text-gray-800 hover:text-blue-600">Admin Control</Link>
-          <button onClick={handleLogout} className="bg-red-600 text-white px-4 py-2 rounded-md hover:bg-red-700">Logout</button>
+          <button onClick={handleLogout} className="bg-red-600 text-white cursor-pointer px-4 py-2 rounded-md hover:bg-red-700">Logout</button>
         </>
       );
     }

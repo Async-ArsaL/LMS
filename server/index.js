@@ -4,15 +4,17 @@ const cookieParser = require("cookie-parser");
 require('dotenv').config();
 const cors = require('cors');
 
+//middleware for cors
+app.use(cors({
+  origin: "http://localhost:5173",
+  credentials: true                
+}));
 const PORT = process.env.PORT || 4000;
 
 //middleware to parse json request body
 app.use(express.json());
 app.use(cookieParser());
-app.use(cors({
-  origin: "http://localhost:5173",
-  credentials: true                
-}));
+
 
 // 👇 uploads folder ko public bana diya
 app.use("/uploads", express.static("uploads"));
@@ -34,6 +36,8 @@ app.use("/api/v4/student", studentRoutes);
 app.use("/api/v5/course", courseRoutes);
 app.use("/api/v6/instructor", instructorRoutes);
 app.use("/api/v7/admin", adminRoutes);
+app.use("/api/admin", adminRoutes);
+
 
 // start the server
 app.listen(PORT, ()=>{

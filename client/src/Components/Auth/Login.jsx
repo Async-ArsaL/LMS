@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 
 const Login = () => {
@@ -9,46 +10,38 @@ const Login = () => {
   const navigate = useNavigate();
 
   const handleLogin = async (e) => {
-    e.preventDefault();
+  e.preventDefault();
 
-    
+  try {
+    const res = await fetch("http://localhost:4000/api/v1/login", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ email, password }),
+    });
 
-    try {
-      const res = await fetch("http://localhost:4000/api/v1/login", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email, password }),
-      });
+    const data = await res.json();
 
-      const data = await res.json();
+    if (res.ok) {
+      localStorage.setItem("token", data.token);
+      localStorage.setItem("name", data.user.name);
+      localStorage.setItem("role", data.user.role.toLowerCase()); // lowercase
 
-            console.log("Login response:", data)
+      // Role-based redirect
+      const role = data.user.role.toLowerCase();
+      if (role === "admin") navigate("/adminDashboard", { replace: true });
+      else if (role === "student") navigate("/studentDashboard", { replace: true });
+      else if (role === "instructor") navigate("/adminControl", { replace: true });
+      else navigate("/", { replace: true });
 
-      if (res.ok) {
-         localStorage.setItem("token", data.token); // token save
-         localStorage.setItem("name", data.user.name);
-         localStorage.setItem("role", data.user.role);
-
-        const userRole = data.user.role; // Backend se role mil raha hai
-
-        // Role-based redirect
-
-        if (userRole === "Admin") navigate("/adminDashboard");
-        else if (userRole === "Student") navigate("/studentDashBoard");
-        else if (userRole === "Instructor") navigate("/adminControl");
-        else navigate("/"); // fallback
-
-        alert("Login Successful!");
-      } else {
-        setMessage(data.message || "Login Failed");
-        alert("Login Failed: " + (data.message || "Try again"));
-      }
-    } catch (err) {
-      console.log(err);
-      setMessage("Server Error");
-      alert("Server Error");
+      alert("Login Successful!");
+    } else {
+      alert("Login Failed: " + (data.message || "Try again"));
     }
-  };
+  } catch (err) {
+    console.log(err);
+    alert("Server Error");
+  }
+};
 
   return (
     <div className="min-h-[calc(100vh-65px)] bg-gradient-to-br from-white to-blue-200 flex items-center justify-center px-4 py-10">
