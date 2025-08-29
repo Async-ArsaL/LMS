@@ -33,6 +33,9 @@ app.use("/api/v4/student", studentRoutes);
 app.use("/api/v5/course", courseRoutes);
 app.use("/api/v6/instructor", instructorRoutes);
 app.use("/api/v7/admin", adminRoutes);
+app.use("/api/admin", adminRoutes);
+
+
 // start the server
 
 app.listen(PORT, ()=>{

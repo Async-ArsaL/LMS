@@ -1,6 +1,9 @@
 const Admin = require("../models/Admin");
+const User = require("../models/User");
+const Instructor = require("../models/Instructor");
+const Course = require("../models/Course");
 
-//Create Admin
+// Create Admin
 exports.createAdmin = async (req, res) => {
   try {
     const { user, instructor, course, permissions } = req.body;
@@ -22,7 +25,7 @@ exports.createAdmin = async (req, res) => {
   }
 };
 
-//Get All Admins
+// Get All Admins
 exports.getAllAdmins = async (req, res) => {
   try {
     const admins = await Admin.find()
@@ -36,7 +39,7 @@ exports.getAllAdmins = async (req, res) => {
   }
 };
 
-//Get Admin by ID
+// Get Admin by ID
 exports.getAdminById = async (req, res) => {
   try {
     const admin = await Admin.findById(req.params.id)
@@ -45,7 +48,9 @@ exports.getAdminById = async (req, res) => {
       .populate("course", "title");
 
     if (!admin) {
-      return res.status(404).json({ success: false, message: "Admin not found" });
+      return res
+        .status(404)
+        .json({ success: false, message: "Admin not found" });
     }
 
     res.json({ success: true, data: admin });
@@ -54,18 +59,24 @@ exports.getAdminById = async (req, res) => {
   }
 };
 
-//Update Admin
+// Update Admin
 exports.updateAdmin = async (req, res) => {
   try {
     const admin = await Admin.findByIdAndUpdate(req.params.id, req.body, {
       new: true,
     })
       .populate("user", "name email")
-      .populate("instructor", "user")
+      .populate({
+        path: "instructor",
+        populate: { path: "user", select: "name email" },
+      })
+
       .populate("course", "title");
 
     if (!admin) {
-      return res.status(404).json({ success: false, message: "Admin not found" });
+      return res
+        .status(404)
+        .json({ success: false, message: "Admin not found" });
     }
 
     res.json({ success: true, message: "Admin updated", data: admin });
@@ -74,15 +85,36 @@ exports.updateAdmin = async (req, res) => {
   }
 };
 
-//Delete Admin
+// Delete Admin
 exports.deleteAdmin = async (req, res) => {
   try {
     const admin = await Admin.findByIdAndDelete(req.params.id);
     if (!admin) {
-      return res.status(404).json({ success: false, message: "Admin not found" });
+      return res
+        .status(404)
+        .json({ success: false, message: "Admin not found" });
     }
 
     res.json({ success: true, message: "Admin deleted" });
+  } catch (error) {
+    res.status(500).json({ success: false, message: error.message });
+  }
+};
+// Get Dashboard Stats
+exports.getAdminStats = async (req, res) => {
+  try {
+    const totalUsers = await User.countDocuments();
+    const totalInstructors = await Instructor.countDocuments();
+    const activeCourses = await Course.countDocuments();
+
+    res.json({
+      success: true,
+      data: {
+        totalUsers,
+        totalInstructors,
+        activeCourses,
+      },
+    });
   } catch (error) {
     res.status(500).json({ success: false, message: error.message });
   }

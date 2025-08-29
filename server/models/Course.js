@@ -14,18 +14,8 @@ const courseSchema = new mongoose.Schema({
         ref: 'User',
         required: true,
     }],
-
-    category: {
-        type: String,  
-        required: true,
-    },
-
-    createdAt: Date,
-    updatedAt: Date,
-
-    thumbnail: {
-        type: String,
-    },
+}, {
+    timestamps: true 
 });
 
 module.exports = mongoose.model("Course", courseSchema);
