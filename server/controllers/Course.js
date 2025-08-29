@@ -3,23 +3,23 @@ const Course = require("../models/Course");
 // Create Course
 exports.createCourse = async (req, res) => {
   try {
-    const { title, courseDescription, instructor, category, thumbnail } = req.body;
+    const { title, desc, category, level, price, instructor, thumbnail } = req.body;
 
-    if (!title || !courseDescription || !instructor || !category) {
+    if (!title || !desc || !category || !level || !price || !instructor) {
       return res.status(400).json({
         success: false,
-        message: "All required fields must be provided",
+        message: "All fields are required",
       });
     }
 
     const course = await Course.create({
       title,
-      courseDescription,
-      instructor,
+      desc,
       category,
+      level,
+      price,
+      instructor,
       thumbnail,
-      createdAt: new Date(),
-      updatedAt: new Date(),
     });
 
     res.status(201).json({
@@ -32,7 +32,7 @@ exports.createCourse = async (req, res) => {
   }
 };
 
-//Get All Courses
+// Get All Courses
 exports.getAllCourses = async (req, res) => {
   try {
     const courses = await Course.find().populate("instructor", "name email");
@@ -43,7 +43,7 @@ exports.getAllCourses = async (req, res) => {
   }
 };
 
-//Get Course by ID
+// Get Course by ID
 exports.getCourseById = async (req, res) => {
   try {
     const course = await Course.findById(req.params.id).populate(
@@ -64,11 +64,23 @@ exports.getCourseById = async (req, res) => {
 // Update Course
 exports.updateCourse = async (req, res) => {
   try {
-    const course = await Course.findByIdAndUpdate(
-      req.params.id,
-      { ...req.body, updatedAt: new Date() },
-      { new: true }
-    ).populate("instructor", "name email");
+    const { title, desc, category, level, price, instructor, thumbnail } = req.body;
+
+    const updatedData = {
+      ...(title && { title }),
+      ...(desc && { desc }),
+      ...(category && { category }),
+      ...(level && { level }),
+      ...(price && { price }),
+      ...(instructor && { instructor }),
+      ...(thumbnail && { thumbnail }),
+      updatedAt: new Date(),
+    };
+
+    const course = await Course.findByIdAndUpdate(req.params.id, updatedData, {
+      new: true,
+      runValidators: true,
+    }).populate("instructor", "name email");
 
     if (!course) {
       return res.status(404).json({ success: false, message: "Course not found" });
@@ -80,7 +92,7 @@ exports.updateCourse = async (req, res) => {
   }
 };
 
-//Delete Course
+// Delete Course
 exports.deleteCourse = async (req, res) => {
   try {
     const course = await Course.findByIdAndDelete(req.params.id);

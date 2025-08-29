@@ -9,6 +9,9 @@ const CourseDetails = () => {
   const [error, setError] = useState("");
   const navigate = useNavigate();
 
+  // Helper function to capitalize first letter
+  const capitalize = (str) => str ? str.charAt(0).toUpperCase() + str.slice(1) : "";
+
   useEffect(() => {
     const fetchCourse = async () => {
       try {
@@ -41,9 +44,9 @@ const CourseDetails = () => {
   return (
     <div className="min-h-[calc(100vh-64px)] bg-gradient-to-br from-white to-blue-200 px-2 sm:px-6">
       <div className="w-full rounded-2xl p-4 sm:p-8">
-        <h2 className="text-4xl sm:text-5xl font-bold text-gray-900">{course.title}</h2>
+        <h2 className="text-4xl sm:text-5xl font-bold text-gray-900">{capitalize(course.title)}</h2>
         <p className="text-lg sm:text-xl text-gray-500 mt-2">
-          Taught by <span className="font-medium text-xl">{course.instructor?.name}</span> • {course.level} • {course.category}
+          Taught by <span className="font-medium text-xl">{capitalize(course.instructor?.name)}</span> • {capitalize(course.level)} • {capitalize(course.category)}
         </p>
 
         {/* Tabs */}
@@ -72,7 +75,10 @@ const CourseDetails = () => {
           <div className="text-lg sm:text-xl font-semibold mb-2">Buy this course</div>
           <div className="text-2xl sm:text-3xl font-bold mb-5">₹{course.price}</div>
           <div className="flex flex-col sm:flex-row gap-4">
-            <button className="flex-1 bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700 transition">
+            <button 
+            onClick={goToPayment}
+            
+            className="flex-1 bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700 transition">
               Enroll Now
             </button>
             <button className="flex-1 border border-gray-500 px-6 py-3 rounded-lg hover:bg-gray-100 transition">

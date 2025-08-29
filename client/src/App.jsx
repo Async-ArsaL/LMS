@@ -2,6 +2,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Header from "./Components/Header";
 import Home from "./pages/Home";
 import CourseList from "./pages/CourseList";
+import Payment from "./Components/Payment"; // or correct path
 import Pricing from "./pages/Pricing";
 import Profile from "./pages/Profile";
 import CourseDetails from "./pages/CourseDetails";
@@ -62,7 +63,7 @@ const App = () => {
               }
             />
             <Route
-              path="/courseDetails"
+              path="/courseDetails/:id"
               element={
                 <ProtectedRoute role="student">
                   <CourseDetails />
