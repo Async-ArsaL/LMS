@@ -3,6 +3,7 @@ import { BrowserRouter, Routes, Route} from "react-router-dom";
 import Header from "./Components/Header";
 import Home from "./pages/Home";
 import CourseList from "./pages/CourseList";
+import Payment from "./Components/Payment"; 
 import Pricing from "./pages/Pricing";
 import Profile from "./pages/Profile";
 import CourseDetails from "./pages/CourseDetails";
@@ -13,7 +14,6 @@ import AdminControl from "./pages/AdminControl";
 import Signup from "./Components/Auth/Signup";
 import Login from "./Components/Auth/Login";
 import CreateCourse from "./pages/CreateCourse";
-import Payment from "./Components/Payment";
 import OtpVerification from "./Components/Auth/OtpVerification";
 import "./App.css";
 
@@ -25,32 +25,80 @@ const App = () => {
         <div className="min-h-screen bg-gray-50">
           <Header />
         
+        
           <Routes>
-  {/* Public Routes */}
-  <Route path="/" element={<Home />} />
-  <Route path="/login" element={<Login />} />
-  <Route path="/signup" element={<Signup />} />
+            {/* Public Routes */}
+            <Route path="/" element={<Home />} />
+            <Route path="/login" element={<Login />} />
+            <Route path="/signup" element={<Signup />} />
 
-  {/* Student Routes */}
-  <Route 
-    path="/studentDashboard" 
-    element={<ProtectedRoute role="student"><StudentDashBoard /></ProtectedRoute>} 
-  />
-  <Route path="/courses" element={<ProtectedRoute role="student"><CourseList /></ProtectedRoute>} />
-  <Route path="/pricing" element={<ProtectedRoute role="student"><Pricing/></ProtectedRoute>} />
-  <Route path="/profile" element={<ProtectedRoute role="student"><Profile/></ProtectedRoute>} />
-  <Route path="/courseDetails" element={<ProtectedRoute role="student"><CourseDetails/></ProtectedRoute>} />
-  <Route path="/payment" element={<ProtectedRoute role="student"><Payment/></ProtectedRoute>} />
+            {/* Student Routes */}
+            <Route
+              path="/studentDashboard"
+              element={
+                <ProtectedRoute role="student">
+                  <StudentDashBoard />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/courses"
+              element={
+                <ProtectedRoute role="student">
+                  <CourseList />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/pricing"
+              element={
+                <ProtectedRoute role="student">
+                  <Pricing />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/profile"
+              element={
+                <ProtectedRoute role="student">
+                  <Profile />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/courseDetails/:id"
+              element={
+                <ProtectedRoute role="student">
+                  <CourseDetails />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/payment"
+              element={
+                <ProtectedRoute role="student">
+                  <Payment />
+                </ProtectedRoute>
+              }
+            />
 
-  {/* Instructor Routes */}
-  <Route 
-    path="/createCourse" 
-    element={<ProtectedRoute role="instructor"><CreateCourse /></ProtectedRoute>} 
-  />
-  <Route 
-    path="/adminControl" 
-    element={<ProtectedRoute role="instructor"><AdminControl /></ProtectedRoute>} 
-  />
+            {/* Instructor Routes */}
+            <Route
+              path="/createCourse"
+              element={
+                <ProtectedRoute role="instructor">
+                  <CreateCourse />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/adminControl"
+              element={
+                <ProtectedRoute role="instructor">
+                  <AdminControl />
+                </ProtectedRoute>
+              }
+            />
 
   {/* Admin Routes */}
   <Route 
