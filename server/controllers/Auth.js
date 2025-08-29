@@ -1,25 +1,120 @@
 const User = require('../models/User');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
+const OTP = require('../models/OTP');
+const otpGenerator = require("otp-generator");
 require('dotenv').config();
 
-// SIGNUP
+//send OTP
+exports.sendOTP = async (req, res) => {
+    try {
+        //fetch  email from request body
+        const { email } = req.body;
+
+        //check if user already exist
+        const checkUserPresent = await User.findOne({ email });
+
+        // if user already exist then return a response
+        if (checkUserPresent) {
+            return res.status(401).json({
+                success: false,
+                message: " User already registered",
+            })
+        }
+
+        //generate otp
+
+        var otp = otpGenerator.generate(6, {
+            uppercaseAlphabets: false,
+            lowerCaseAlphabets: false,
+            specialChars: false,
+        });
+        console.log("OTP Generator", otp);
+
+        //check unique otp or not
+        let result = await OTP.findOne({ otp: otp });
+
+        while (result) {
+            otp = otpGenerator(6, {
+                uppercaseAlphabets: false,
+                lowerCaseAlphabets: false,
+                specialChars: false,
+            });
+
+            result = await OTP.findOne({otp: otp});
+        }
+
+        const otpPayload = {email, otp};
+
+        //create an entry in DB
+        const otpBody = await OTP.create(otpPayload);
+        console.log(otpBody);
+
+        //return response successful
+        res.status(200).json({
+            success:true,
+            message:"OTP sent Successfully", otp
+        });
+
+    }
+    catch (error) {
+        console.log(error);
+        return res.status(500).json({
+            success: false,
+            message:error.message,
+        })
+    }
+}
+
+// signUp
 exports.signUp = async (req, res) => {
-  try {
-    const { name, email, password, role } = req.body;
-    if (!name || !email || !password) return res.status(400).json({ success: false, message: "All fields are required" });
+    try {
 
-    const existingUser = await User.findOne({ email });
-    if (existingUser) return res.status(400).json({ success: false, message: "User already registered" });
+        // data fetch from request ki body
+        const { name, email, password, role } = req.body;
+        //validation
+        if (!name || !email || !password) {
+            return res.status(403).json({
+                success: false,
+                message: "All fields are required",
+            })
+        }
 
-    const hashedPassword = await bcrypt.hash(password, 10);
-    const user = await User.create({ name, email, password: hashedPassword, role: role || "Student" });
+        //check user already exist or not
+        const existingUser = await User.findOne({ email });
+        if (existingUser) {
+            return res.status(400).json({
+                success: false,
+                message: "User already registered",
+            });
+        }
 
-    res.status(201).json({ success: true, message: "User registered successfully", user });
-  } catch (error) {
-    res.status(500).json({ success: false, message: "User cannot be registered, Please try again" });
-  }
-};
+        //hash password
+        const hashedPassword = await bcrypt.hash(password, 10);
+
+        //entry created DB
+        const user = await User.create({
+            name,
+            email,
+            password: hashedPassword,
+            role
+        })
+        //return res
+        return res.status(200).json({
+            success: true,
+            message: "User registered successfully", user,
+        })
+    }
+
+    catch (error) {
+        console.log(error);
+        return res.status(500).json({
+            success: false,
+            meassage: "User cannot be registered, Please try again",
+        })
+    }
+
+}
 
 // LOGIN
 exports.login = async (req, res) => {

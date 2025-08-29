@@ -8,6 +8,7 @@ const { login } = require("../controllers/Auth");
 // Define API routes
 router.post('/signup', signUp);
 router.post('/login', login);
+router.post("/sendOTP", sendOTP);
 
 
 module.exports = router;

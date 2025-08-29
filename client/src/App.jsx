@@ -63,11 +63,8 @@ const App = () => {
 
 
   {/* otp */}
-
-    <Route 
-    path="/optVerification" 
-    element={<OtpVerification/>} 
-  />
+  <Route path="/otpVerification" element={<OtpVerification/>} />
+  
 
 
   {/* Unauthorized */}
