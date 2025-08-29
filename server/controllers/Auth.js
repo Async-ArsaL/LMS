@@ -3,10 +3,11 @@ const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const OTP = require('../models/OTP');
 const otpGenerator = require("otp-generator");
+
 require('dotenv').config();
 
 //send OTP
-exports.sendOTO = async (req, res) => {
+exports.sendOTP = async (req, res) => {
     try {
         //fetch  email from request body
         const { email } = req.body;
