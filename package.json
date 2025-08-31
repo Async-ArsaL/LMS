@@ -2,12 +2,13 @@
   "devDependencies": {
     "concurrently": "^9.2.0"
   },
-  
   "name": "lms-root",
   "private": true,
   "scripts": {
     "dev": "concurrently \"npm run dev --prefix client\" \"npm run dev --prefix server\""
+  },
+  "dependencies": {
+    "bcrypt": "^6.0.0",
+    "mongoose": "^8.18.0"
   }
-
-
 }

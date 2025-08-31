@@ -5,6 +5,12 @@ exports.createStudent = async (req, res) => {
   try {
     const { user, profile, enrolledCourses } = req.body;
 
+    if (!user) {
+      return res
+        .status(400)
+        .json({ success: false, message: "User ID is required" });
+    }
+
     const student = await Student.create({ user, profile, enrolledCourses });
 
     res.status(201).json({
@@ -17,13 +23,13 @@ exports.createStudent = async (req, res) => {
   }
 };
 
-// Get All Students
+// Get all Students
 exports.getAllStudents = async (req, res) => {
   try {
     const students = await Student.find()
-      .populate("user", "name email") // user ka sirf name/email dikhayega
-      .populate("profile", "bio")     // profile ka sirf bio dikhayega
-      .populate("enrolledCourses", "title"); // course ka sirf title
+      .populate("user", "name email")
+      .populate("profile", "bio")
+      .populate("enrolledCourses", "title thumbnail");
 
     res.json({ success: true, data: students });
   } catch (error) {
@@ -31,16 +37,18 @@ exports.getAllStudents = async (req, res) => {
   }
 };
 
-//Get Student by ID
+// Get Student by ID
 exports.getStudentById = async (req, res) => {
   try {
     const student = await Student.findById(req.params.id)
       .populate("user", "name email")
       .populate("profile", "bio")
-      .populate("enrolledCourses", "title");
+      .populate("enrolledCourses", "title thumbnail");
 
     if (!student) {
-      return res.status(404).json({ success: false, message: "Student not found" });
+      return res
+        .status(404)
+        .json({ success: false, message: "Student not found" });
     }
 
     res.json({ success: true, data: student });
@@ -49,13 +57,40 @@ exports.getStudentById = async (req, res) => {
   }
 };
 
-//Update Student
+// Update Student (general updates + enrolled courses)
 exports.updateStudent = async (req, res) => {
   try {
-    const student = await Student.findByIdAndUpdate(req.params.id, req.body, { new: true })
-      .populate("user", "name email")
-      .populate("profile", "bio")
-      .populate("enrolledCourses", "title");
+    const { enrolledCourses } = req.body;
+
+    const student = await Student.findById(req.params.id);
+    if (!student)
+      return res
+        .status(404)
+        .json({ success: false, message: "Student not found" });
+
+    // Add new courses avoiding duplicates
+    if (enrolledCourses && Array.isArray(enrolledCourses)) {
+      enrolledCourses.forEach((courseId) => {
+        if (!student.enrolledCourses.includes(courseId)) {
+          student.enrolledCourses.push(courseId);
+        }
+      });
+    }
+
+    // Update other fields
+    Object.keys(req.body).forEach((key) => {
+      if (key !== "enrolledCourses") {
+        student[key] = req.body[key];
+      }
+    });
+
+    await student.save();
+
+    await student.populate([
+      { path: "user", select: "name email" },
+      { path: "profile", select: "bio" },
+      { path: "enrolledCourses", select: "title thumbnail" },
+    ]);
 
     res.json({ success: true, message: "Student updated", data: student });
   } catch (error) {
@@ -63,12 +98,48 @@ exports.updateStudent = async (req, res) => {
   }
 };
 
-//Delete Student
+// Delete Student
 exports.deleteStudent = async (req, res) => {
   try {
-    await Student.findByIdAndDelete(req.params.id);
-    res.json({ success: true, message: "Student deleted" });
+    const student = await Student.findByIdAndDelete(req.params.id);
+
+    if (!student) {
+      return res
+        .status(404)
+        .json({ success: false, message: "Student not found" });
+    }
+
+    res.json({ success: true, message: "Student deleted successfully" });
   } catch (error) {
     res.status(500).json({ success: false, message: error.message });
+  }
+};
+
+// Enroll a course (specific route)
+exports.enrollCourse = async (req, res) => {
+  try {
+    const { courseId } = req.body;
+    const student = await Student.findById(req.params.id);
+
+    if (!student)
+      return res
+        .status(404)
+        .json({ success: false, message: "Student not found" });
+
+    if (courseId && !student.enrolledCourses.includes(courseId)) {
+      student.enrolledCourses.push(courseId);
+    }
+
+    await student.save();
+
+    await student.populate([
+      { path: "user", select: "name email" },
+      { path: "profile", select: "bio" },
+      { path: "enrolledCourses", select: "title thumbnail" },
+    ]);
+
+    res.json({ success: true, message: "Course enrolled", data: student });
+  } catch (err) {
+    res.status(500).json({ success: false, message: err.message });
   }
 };

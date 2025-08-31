@@ -14,7 +14,7 @@ const OtpVerification = () => {
     e.preventDefault();
     try {
       // 1) Verify OTP
-      const otpRes = await fetch("http://localhost:4000/api/v1/otp", {
+      const otpRes = await fetch("http://localhost:4000/api/v1/users/otp", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email, otp }),
@@ -28,7 +28,7 @@ const OtpVerification = () => {
       }
 
       // 2) OTP correct → Signup API call
-      const signupRes = await fetch("http://localhost:4000/api/v1/signup", {
+      const signupRes = await fetch("http://localhost:4000/api/v1/users/signup", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ name, email, password, role }),

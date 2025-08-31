@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
+import Spinner from "../Components/Spinner"; 
 
 const CourseList = () => {
   const [courses, setCourses] = useState([]);
@@ -12,14 +14,12 @@ const CourseList = () => {
   useEffect(() => {
     const fetchCourses = async () => {
       try {
+        setLoading(true);
         const token = localStorage.getItem("token");
-        const res = await axios.get("http://localhost:4000/api/v5/course", {
+        const res = await axios.get("http://localhost:4000/api/v5/courses", {
           headers: { Authorization: `Bearer ${token}` },
         });
 
-        console.log("API Response:", res.data);
-
-        // normalize response safely
         const data = res.data?.data || [];
         if (!Array.isArray(data)) throw new Error("Invalid course response");
 
@@ -27,6 +27,7 @@ const CourseList = () => {
       } catch (err) {
         console.error("Error fetching courses:", err.message);
         setError("Failed to load courses. Please try again later.");
+        toast.error("Failed to load courses!");
       } finally {
         setLoading(false);
       }
@@ -44,7 +45,6 @@ const CourseList = () => {
     else alert("Course ID not found!");
   };
 
-  if (loading) return <p className="text-center mt-10">Loading courses...</p>;
   if (error) return <p className="text-center mt-10 text-red-600">{error}</p>;
 
   return (
@@ -61,8 +61,13 @@ const CourseList = () => {
         />
       </div>
 
+      {/* Loading spinner */}
+      {loading && <div className="flex justify-center items-center mt-10">
+         <Spinner/>
+        </div>}
+
       {/* Courses Grid */}
-      {filteredCourses.length === 0 ? (
+      {!loading && filteredCourses.length === 0 ? (
         <p className="text-center text-gray-700">No courses found.</p>
       ) : (
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
@@ -81,11 +86,12 @@ const CourseList = () => {
                 className="w-full h-45 object-cover shadow shadow-blue-200"
               />
               <div className="p-2">
-                <h3 className="font-semibold text-xl">{course?.title || "Untitled"}</h3>
+                <h3 className="font-semibold text-xl">
+                  {course?.title || "Untitled"}
+                </h3>
                 <p className="text-gray-500 text-sm">
                   {course?.category || "Uncategorized"}
                 </p>
-                
                 <p className="text-gray-700 text-sm mb-2">
                   {course?.desc || "No description available."}
                 </p>
@@ -93,7 +99,9 @@ const CourseList = () => {
                   ₹{course?.price ?? "N/A"}
                 </p>
                 <div className="flex space-x-2">
-                  <button className="bg-green-500 hover:bg-green-600 text-white py-1 px-2 rounded text-sm">
+                  <button 
+                  onClick={() => goToCourseDetails(course._id)}
+                  className="bg-green-500 hover:bg-green-600 text-white py-1 px-2 rounded text-sm">
                     Enroll
                   </button>
                   <button

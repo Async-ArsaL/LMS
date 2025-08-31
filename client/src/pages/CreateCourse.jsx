@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import CreateList from '../pages/CourseList'
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const CreateCourse = () => {
   const [formData, setFormData] = useState({
@@ -10,33 +11,31 @@ const CreateCourse = () => {
     category: "",
     level: "",
     img: null,
-    price: ""
+    price: "",
   });
-  const [message, setMessage] = useState("");
   const [token, setToken] = useState("");
   const navigate = useNavigate();
 
-  // Get token from localStorage on component mount
   useEffect(() => {
     const storedToken = localStorage.getItem("token");
     if (storedToken) setToken(storedToken);
   }, []);
 
-  // handle input changes
   const handleChange = (e) => {
     const { name, value, files } = e.target;
-    setFormData(prev => ({
+    setFormData((prev) => ({
       ...prev,
-      [name]: files ? files[0] : value
+      [name]: files ? files[0] : value,
     }));
   };
 
-  // handle form submit
   const handleSubmit = async (e) => {
     e.preventDefault();
 
     if (!token) {
-      setMessage("Login first to create a course.");
+      toast.error("Login first to create a course.", {
+        position: "top-center",
+      });
       return;
     }
 
@@ -50,38 +49,45 @@ const CreateCourse = () => {
       data.append("thumbnail", formData.img);
 
       const res = await axios.post(
-        "http://localhost:4000/api/v5/course",
+        "http://localhost:4000/api/v5/courses",
         data,
         {
           headers: {
             "Content-Type": "multipart/form-data",
-            "Authorization": `Bearer ${token}`
-          }
+            Authorization: `Bearer ${token}`,
+          },
         }
       );
 
-      setMessage(res.data.message);
-       if(res.data.success){
-      navigate("/courses");
-    }
+      if (res.data.success) {
+        toast.success(res.data.message || "Course created successfully!", {
+          position: "top-center",
+        });
+        navigate("/courses");
+      } else {
+        toast.error(res.data.message || "Failed to create course", {
+          position: "top-center",
+        });
+      }
 
-      // Reset form
       setFormData({
         title: "",
         desc: "",
         category: "",
         level: "",
         img: null,
-        price: ""
+        price: "",
       });
     } catch (error) {
-      setMessage(error.response?.data?.message || "Error creating course");
+      toast.error(error.response?.data?.message || "Error creating course", {
+        position: "top-center",
+      });
     }
   };
 
   return (
     <div className="min-h-[calc(100vh-64px)] bg-gradient-to-br from-white to-blue-200 flex flex-col items-center p-4 sm:p-6">
-      {/* Top Section */}
+      <ToastContainer />
       <div className="m-4 w-full sm:w-[90%] md:w-[80%] lg:w-[75%] flex flex-row flex-wrap justify-between items-center gap-3">
         <h1 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-semibold text-black">
           Step: 1 Create Course
@@ -91,11 +97,11 @@ const CreateCourse = () => {
         </div>
       </div>
 
-      {/* Form Section */}
       <form
         onSubmit={handleSubmit}
         className="flex flex-col flex-grow w-full sm:w-[90%] md:w-[80%] lg:w-[75%] rounded-lg p-3"
       >
+        {/* Form fields same as before */}
         <label htmlFor="title">
           <h2 className="text-black font-semibold">Course Title</h2>
         </label>
@@ -125,7 +131,9 @@ const CreateCourse = () => {
 
         <div className="flex flex-col md:flex-row gap-2">
           <div className="w-full">
-            <label htmlFor="category"><h2 className="text-black font-semibold">Category</h2></label>
+            <label htmlFor="category">
+              <h2 className="text-black font-semibold">Category</h2>
+            </label>
             <select
               id="category"
               name="category"
@@ -143,7 +151,9 @@ const CreateCourse = () => {
           </div>
 
           <div className="w-full">
-            <label htmlFor="price"><h2 className="text-black font-semibold">Price</h2></label>
+            <label htmlFor="price">
+              <h2 className="text-black font-semibold">Price</h2>
+            </label>
             <input
               type="number"
               id="price"
@@ -158,7 +168,9 @@ const CreateCourse = () => {
 
         <div className="flex flex-col md:flex-row gap-2">
           <div className="w-full">
-            <label htmlFor="level"><p className="block font-semibold">Level</p></label>
+            <label htmlFor="level">
+              <p className="block font-semibold">Level</p>
+            </label>
             <select
               id="level"
               name="level"
@@ -175,7 +187,9 @@ const CreateCourse = () => {
           </div>
 
           <div className="w-full">
-            <label htmlFor="img"><p className="font-semibold">Upload Thumbnail</p></label>
+            <label htmlFor="img">
+              <p className="font-semibold">Upload Thumbnail</p>
+            </label>
             <input
               type="file"
               id="img"
@@ -184,27 +198,41 @@ const CreateCourse = () => {
               onChange={handleChange}
               className="w-full px-3 py-2 mt-2 mb-3 border border-gray-300 rounded cursor-pointer"
             />
-            {formData.img && <p className="text-sm text-gray-600">Selected: {formData.img.name}</p>}
+            {formData.img && (
+              <p className="text-sm text-gray-600">
+                Selected: {formData.img.name}
+              </p>
+            )}
           </div>
         </div>
 
         <div className="flex flex-wrap justify-center md:justify-between gap-2 mt-3">
-          <button type="submit" className="w-full sm:w-[48%] md:w-[30%] lg:w-[27%] cursor-pointer py-3 bg-blue-500 text-white rounded-md shadow-md hover:bg-blue-600 transition">
+          <button
+            type="submit"
+            className="w-full sm:w-[48%] md:w-[30%] lg:w-[27%] cursor-pointer py-3 bg-blue-500 text-white rounded-md shadow-md hover:bg-blue-600 transition"
+          >
             Save & Next
           </button>
-          <button type="button" className="w-full sm:w-[48%] md:w-[30%] lg:w-[22%] cursor-pointer py-3 border rounded-md hover:bg-gray-100 transition">
+          <button
+            type="button"
+            className="w-full sm:w-[48%] md:w-[30%] lg:w-[22%] cursor-pointer py-3 border rounded-md hover:bg-gray-100 transition"
+          >
             Preview Course
           </button>
-          <button type="button" className="w-full sm:w-[48%] md:w-[20%] lg:w-[12%] cursor-pointer py-3 border rounded-md hover:bg-gray-100 transition">
+          <button
+            type="button"
+            className="w-full sm:w-[48%] md:w-[20%] lg:w-[12%] cursor-pointer py-3 border rounded-md hover:bg-gray-100 transition"
+          >
             Back
           </button>
-          <button type="submit" className="w-full sm:w-[48%] md:w-[30%] lg:w-[27%] cursor-pointer py-3 bg-green-500 text-white rounded-md shadow-md hover:bg-green-600 transition">
+          <button
+            type="submit"
+            className="w-full sm:w-[48%] md:w-[30%] lg:w-[27%] cursor-pointer py-3 bg-green-500 text-white rounded-md shadow-md hover:bg-green-600 transition"
+          >
             Publish Course
           </button>
         </div>
       </form>
-
-      {message && <p className="mt-4 text-black font-semibold">{message}</p>}
     </div>
   );
 };

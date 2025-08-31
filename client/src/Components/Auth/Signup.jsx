@@ -1,12 +1,14 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+
 
 const Signup = () => {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [role, setRole] = useState("Student");
-  const [message, setMessage] = useState("");
 
   const navigate = useNavigate();
 
@@ -14,37 +16,32 @@ const Signup = () => {
     e.preventDefault();
 
     try {
-      // 1) Send OTP
-      const otpRes = await fetch("http://localhost:4000/api/v1/otp", {
+      const otpRes = await fetch("http://localhost:4000/api/v1/users/otp", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email }),
       });
 
       const otpData = await otpRes.json();
-      console.log("OTP Response:", otpData);
 
       if (!otpRes.ok) {
-        alert("Error sending OTP: " + (otpData.message || "Try again"));
+        toast.error("Error sending OTP: " + (otpData.message || "Try again"));
         return;
       }
 
-      alert("OTP sent to your email. Please verify.");
+      toast.success("OTP sent to your email. Please verify.");
 
-      // 2) Redirect to OTP verification page with user details
       navigate("/otpVerification", {
         state: { name, email, password, role },
       });
 
-      // Clear form
       setName("");
       setEmail("");
       setPassword("");
       setRole("Student");
     } catch (err) {
       console.error(err);
-      setMessage("Server Error");
-      alert("Server Error");
+      toast.error("Server Error");
     }
   };
 
@@ -94,11 +91,13 @@ const Signup = () => {
             className="w-full px-3 py-2 border rounded-lg text-gray-900 focus:outline-none focus:ring-blue-500 focus:border-blue-500"
           >
             <option value="Student">Student</option>
+            <option value="Instructor">Instructor</option>
+            <option value="Admin">Admin</option>
           </select>
 
           <button
             type="submit"
-            className="w-full cursor-pointer flex justify-center py-2.5 px-4 border border-transparent rounded-lg shadow-sm text-base font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+            className="w-full cursor-pointer flex justify-center py-2.5 px-4 border border-transparent rounded-lg shadow-sm text-base font-medium text-white bg-blue-600 hover:bg-blue-700 transition duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
           >
             Sign Up
           </button>

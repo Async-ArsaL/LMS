@@ -6,7 +6,10 @@ const {
   getStudentById,
   updateStudent,
   deleteStudent,
+  enrollCourse
 } = require("../controllers/Student");
+
+const { auth, isStudent } = require("../middlewares/auth");
 
 // Add Student
 router.post("/create", createStudent);
@@ -14,13 +17,16 @@ router.post("/create", createStudent);
 // Get All Students
 router.get("/", getAllStudents);
 
-// Get student by ID           
-router.get("/:id", getStudentById);
+// Get student by ID
+router.get("/:id", auth, isStudent, getStudentById);
 
-// Update student      
-router.put("/:id", updateStudent);
+// Update student (general updates)
+router.put("/:id", auth, isStudent, updateStudent);
 
-// Delete student        
+// Enroll course
+router.post("/:id/enroll", auth, isStudent, enrollCourse);
+
+// Delete student
 router.delete("/:id", deleteStudent);
 
 module.exports = router;
