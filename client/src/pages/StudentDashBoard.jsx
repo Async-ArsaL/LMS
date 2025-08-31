@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import Spinner from "../Components/Spinner"
 
 const StudentDashBoard = () => {
   const [courses, setCourses] = useState([]);
@@ -41,7 +42,7 @@ const StudentDashBoard = () => {
   if (loading) {
     return (
       <div className="flex justify-center items-center h-[calc(100vh-64px)]">
-        <p className="text-xl font-medium text-gray-600">Loading courses...</p>
+        <Spinner/>
       </div>
     );
   }

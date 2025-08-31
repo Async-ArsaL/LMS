@@ -1,13 +1,12 @@
 import React, { useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
+import { toast } from "react-toastify";
 
 const OtpVerification = () => {
   const [otp, setOtp] = useState("");
-  const [message, setMessage] = useState("");
   const navigate = useNavigate();
   const location = useLocation();
 
-  // signup se jo details bheja tha state se receive karna
   const { name, email, password, role } = location.state || {};
 
   const handleVerify = async (e) => {
@@ -23,28 +22,31 @@ const OtpVerification = () => {
       const otpData = await otpRes.json();
 
       if (!otpRes.ok) {
-        setMessage(otpData.message || "Invalid OTP");
+        toast.error(otpData.message || "Invalid OTP");
         return;
       }
 
       // 2) OTP correct → Signup API call
-      const signupRes = await fetch("http://localhost:4000/api/v1/users/signup", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ name, email, password, role }),
-      });
+      const signupRes = await fetch(
+        "http://localhost:4000/api/v1/users/signup",
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ name, email, password, role }),
+        }
+      );
 
       const signupData = await signupRes.json();
 
       if (signupRes.ok) {
-        alert("Account created successfully! Please login.");
-        navigate("/login"); // redirect to login page
+        toast.success("Account created successfully! Please login.");
+        navigate("/login");
       } else {
-        setMessage(signupData.message || "Signup failed!");
+        toast.error(signupData.message || "Signup failed!");
       }
     } catch (err) {
       console.error(err);
-      setMessage("Server Error. Try again.");
+      toast.error("Server Error. Try again.");
     }
   };
 
@@ -76,13 +78,9 @@ const OtpVerification = () => {
             Verify OTP
           </button>
         </form>
-
-        {message && <p className="text-center text-red-600 mt-3">{message}</p>}
       </div>
     </div>
   );
 };
 
 export default OtpVerification;
-
-

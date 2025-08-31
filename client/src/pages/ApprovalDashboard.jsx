@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
+import Spinner from "../Components/Spinner";
 
 const ApprovalDashboard = () => {
   const [pendingUsers, setPendingUsers] = useState([]);
@@ -86,7 +87,12 @@ const ApprovalDashboard = () => {
     }
   };
 
-  if (loading) return <div>Loading...</div>;
+ if (loading)
+  return (
+    <div className="flex justify-center pt-16">
+      <Spinner />
+    </div>
+  );
 
   if (error) return <div style={{ color: "red" }}>{error}</div>;
 
