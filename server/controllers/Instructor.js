@@ -21,9 +21,9 @@ exports.createInstructor = async (req, res) => {
 exports.getAllInstructors = async (req, res) => {
   try {
     const instructors = await Instructor.find()
-      .populate("user", "name email")     // User ka name, email
-      .populate("profile", "bio")         // Profile ka bio
-      .populate("myCourses", "title");    // Courses ka sirf title
+      .populate("user", "name email")  
+      .populate("profile", "bio")         
+      .populate("myCourses", "title");   
 
     res.json({ success: true, data: instructors });
   } catch (error) {

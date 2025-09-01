@@ -20,7 +20,7 @@ router.get("/", getAllStudents);
 // Get student by ID
 router.get("/:id", auth, isStudent, getStudentById);
 
-// Update student (general updates)
+// Update student 
 router.put("/:id", auth, isStudent, updateStudent);
 
 // Enroll course

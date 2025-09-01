@@ -8,7 +8,7 @@ const Login = () => {
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
-  // Manage body cursor style
+
   useEffect(() => {
     if (loading) {
       document.body.style.cursor = "not-allowed";
@@ -16,7 +16,7 @@ const Login = () => {
       document.body.style.cursor = "auto";
     }
 
-    // Reset on unmount
+  
     return () => {
       document.body.style.cursor = "auto";
     };
@@ -46,7 +46,7 @@ const Login = () => {
 
         toast.success("Login Successful!");
 
-        // Role-based redirect
+        // Role ke hisab se redirect
         if (data.user.role.toLowerCase() === "admin")
           navigate("/adminDashboard", { replace: true });
         else if (data.user.role.toLowerCase() === "student")

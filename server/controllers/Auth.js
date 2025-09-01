@@ -75,7 +75,7 @@ exports.signUp = async (req, res) => {
     const hashedPassword = await bcrypt.hash(password, 10);
 
     // Status based on role
-    let status = "active"; // default for Student
+    let status = "active"; 
     if (role === "Instructor" || role === "Admin") status = "pending";
 
     // Create User

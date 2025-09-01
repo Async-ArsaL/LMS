@@ -27,7 +27,7 @@ import CreateCourse from "./pages/CreateCourse";
 import OtpVerification from "./Components/Auth/OtpVerification";
 import "./App.css";
 
-// ⚠️ Custom component to handle auto logout on login/signup page
+// ⚠️  auto logout on login/signup page
 const AuthRedirectHandler = () => {
   const location = useLocation();
   const navigate = useNavigate();
@@ -65,7 +65,7 @@ const App = () => {
         />
 
         <div className="min-h-screen bg-gray-50">
-          <AuthRedirectHandler /> {/* 👈 this handles forced logout */}
+          <AuthRedirectHandler /> 
           <Header />
           <Routes>
             {/* Public Routes */}

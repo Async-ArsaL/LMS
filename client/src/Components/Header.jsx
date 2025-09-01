@@ -19,7 +19,7 @@ const Header = () => {
     setIsMenuOpen(false);
   };
 
-  // Render links based on role
+  //role ke hisab se render
   const renderLinks = () => {
     if (!token) {
       return (
@@ -248,6 +248,7 @@ const Header = () => {
           </div>
 
           {/* Desktop Menu */}
+          
           <div className="hidden md:flex items-center space-x-8 font-semibold">
             {renderLinks()}
           </div>

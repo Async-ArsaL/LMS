@@ -112,7 +112,7 @@ const CourseDetails = () => {
         </div>
       )}
 
-      {/* Payment panel */}
+      {/* Payment  */}
       {showSidebar && (
         <div className="fixed top-[64px] right-0 w-full sm:w-[400px] shadow-lg transform transition-transform duration-500 z-50">
           <Payment

@@ -101,7 +101,7 @@ const CreateCourse = () => {
         onSubmit={handleSubmit}
         className="flex flex-col flex-grow w-full sm:w-[90%] md:w-[80%] lg:w-[75%] rounded-lg p-3"
       >
-        {/* Form fields same as before */}
+        {/* Form fields  */}
         <label htmlFor="title">
           <h2 className="text-black font-semibold">Course Title</h2>
         </label>

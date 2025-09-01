@@ -12,7 +12,7 @@ const OtpVerification = () => {
   const handleVerify = async (e) => {
     e.preventDefault();
     try {
-      // 1) Verify OTP
+      //Verify OTP
       const otpRes = await fetch("http://localhost:4000/api/v1/users/otp", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -26,7 +26,7 @@ const OtpVerification = () => {
         return;
       }
 
-      // 2) OTP correct → Signup API call
+      // OTP correct to Signup API call kro
       const signupRes = await fetch(
         "http://localhost:4000/api/v1/users/signup",
         {

@@ -57,7 +57,7 @@ exports.getStudentById = async (req, res) => {
   }
 };
 
-// Update Student (general updates + enrolled courses)
+// Update Student 
 exports.updateStudent = async (req, res) => {
   try {
     const { enrolledCourses } = req.body;
@@ -115,7 +115,7 @@ exports.deleteStudent = async (req, res) => {
   }
 };
 
-// Enroll a course (specific route)
+// Enroll a course
 exports.enrollCourse = async (req, res) => {
   try {
     const { courseId } = req.body;

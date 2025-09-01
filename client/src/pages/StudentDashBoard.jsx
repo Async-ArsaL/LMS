@@ -161,7 +161,7 @@ const StudentDashBoard = () => {
         </div>
       </div>
 
-      {/* Bottom Overall Progress (Full Width) */}
+      {/* Bottom Overall Progress  */}
       <div className="mt-6">
         <h2 className="text-sm font-semibold text-gray-800 mb-2">
           Overall Progress
